@@ -40,7 +40,7 @@ COPY --from=user /bin/false /bin/false
 USER lesbin
 COPY --from=user --chown=lesbin /dir /srv/lesbin
 
-ENV API_ADDRESS=0.0.0.0:8255
+ENV LESBIN_API_ADDRESS=0.0.0.0:8255
 ENV DATABASE_URL="sqlite:///srv/lesbin/data.sqlite?mode=rwc"
 ENV RUST_LOG=info
 EXPOSE 8255
