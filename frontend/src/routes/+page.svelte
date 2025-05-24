@@ -130,7 +130,7 @@
     <meta name="title" content="New Paste" />
     <meta
         name="description"
-        content="Create a new end-to-end encrypted paste on lesbin for free."
+        content="Share your dreams, fanfiction, logs and code. Create a new end-to-end encrypted paste on lesbin for free."
     />
 </svelte:head>
 
