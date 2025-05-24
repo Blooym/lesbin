@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Admin Panel | Lesbin</title>
+</svelte:head>
+
 <div class="container">
     <h1>Admin Panel</h1>
     <a href="/admin/reports">Paste Reports</a>
