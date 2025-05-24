@@ -1,7 +1,11 @@
 import { AUTHENTICATION_RETURN_PARAM_NAME } from '$lib/constants.js';
 import { redirect } from '@sveltejs/kit';
 
-export const load = async ({ url, locals }) => {
+export const load = async ({ url, locals, setHeaders }) => {
+    setHeaders({
+		'cache-control': 'no-store',
+	});
+
     // Don't redirect loop the signin page.
     if (url.pathname === '/admin/signin' && !locals.authenticationToken) {
         return;
