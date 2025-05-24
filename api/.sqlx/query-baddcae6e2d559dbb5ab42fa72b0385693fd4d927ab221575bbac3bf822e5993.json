@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT id, encryptedTitle, encryptedContent, expiresAt, createdAt FROM pastes WHERE id = $1 AND (expiresAt IS NULL OR expiresAt > $2)",
+  "query": "SELECT id, encryptedTitle, encryptedContent, expiresAt, syntaxType, createdAt FROM pastes WHERE id = $1 AND (expiresAt IS NULL OR expiresAt > $2)",
   "describe": {
     "columns": [
       {
@@ -24,8 +24,13 @@
         "type_info": "Integer"
       },
       {
-        "name": "createdAt",
+        "name": "syntaxType",
         "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "createdAt",
+        "ordinal": 5,
         "type_info": "Integer"
       }
     ],
@@ -37,8 +42,9 @@
       false,
       false,
       true,
+      false,
       false
     ]
   },
-  "hash": "5503219979d71ce58171c5f2f633dcea2395e8ab37a16473236494aecb2f812a"
+  "hash": "baddcae6e2d559dbb5ab42fa72b0385693fd4d927ab221575bbac3bf822e5993"
 }
