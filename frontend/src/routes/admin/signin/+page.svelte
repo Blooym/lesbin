@@ -7,6 +7,7 @@
 <svelte:head>
     <title>Admin Sign-in | Lesbin</title>
     <meta name="title" content="Admin Sign-in" />
+    <meta name="description" content="Please sign in to continue." />
 </svelte:head>
 
 <div class="container">

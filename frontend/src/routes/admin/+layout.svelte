@@ -3,7 +3,6 @@
 </script>
 
 <svelte:head>
-    <title>Admin | Lesbin</title>
     <meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
