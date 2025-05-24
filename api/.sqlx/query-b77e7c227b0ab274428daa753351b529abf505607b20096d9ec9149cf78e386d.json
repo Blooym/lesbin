@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO paste_reports (pasteId, reason, decryptionKey) VALUES ($1, $2, $3)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "b77e7c227b0ab274428daa753351b529abf505607b20096d9ec9149cf78e386d"
+}

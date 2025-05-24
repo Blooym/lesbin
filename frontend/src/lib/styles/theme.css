@@ -1,0 +1,108 @@
+/* Style */
+:root {
+    --rounding-normal: 6px;
+}
+
+/* Light Colours */
+:root {
+    --col-background: #ebebeb;
+    --col-on-background: #323232;
+    --col-popout-background: #e6e6e6;
+    --col-on-popout: #323232;
+    --col-primary: #9d4fc2;
+    --col-on-primary: #ffffff;
+    --col-destructive: #e22323;
+    --col-on-destructive: white;
+    --col-error: #e22323;
+    --col-neutral: #696969;
+    --col-on-neutral: white;
+    --col-link: hsl(from var(--col-primary) h s 45%);
+}
+
+html {
+    color-scheme: light;
+}
+
+/* Dark Colours */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --col-background: #080808;
+        --col-on-background: white;
+        --col-popout-background: #181818;
+        --col-formfield-background: #252525;
+        --col-on-formfield-background: white;
+        --col-on-popout: white;
+        --col-primary: #9d4fc2;
+        --col-on-primary: white;
+        --col-destructive: #d41818;
+        --col-error: #d41818;
+        --col-on-destructive: white;
+        --col-neutral: lightgrey;
+        --col-on-neutral: black;
+        --col-link: hsl(from var(--col-primary) h s 75%);
+    }
+
+    html {
+        color-scheme: dark;
+    }
+}
+
+a {
+    color: var(--col-link);
+    text-decoration: unset;
+}
+
+a:hover {
+    color: color-mix(in srgb, var(--col-link) 70%, white);
+    text-decoration: underline;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+textarea {
+    padding: var(--rounding-normal);
+    background-color: var(--col-formfield-background);
+    color: var(--col-on-formfield-background);
+    border: 1px dashed var(--col-primary);
+    border-radius: var(--rounding-normal);
+}
+
+textarea:focus {
+    border: 1px solid var(--col-primary);
+    outline: unset;
+    box-shadow: unset;
+}
+
+select {
+    padding: var(--rounding-normal);
+    background-color: var(--col-formfield-background);
+    color: var(--col-on-formfield-background);
+    border: 1px dashed var(--col-primary);
+    border-radius: var(--rounding-normal);
+}
+
+select:focus {
+    border: 1px solid var(--col-primary);
+    outline: unset;
+    box-shadow: unset;
+}
+
+input {
+    padding: var(--rounding-normal);
+    background-color: var(--col-formfield-background);
+    color: var(--col-on-formfield-background);
+    border: 1px dashed var(--col-primary);
+    border-radius: var(--rounding-normal);
+}
+
+input:focus {
+    border: 1px solid var(--col-primary);
+    outline: unset;
+    box-shadow: unset;
+}
