@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id, pasteId, reason, decryptionKey, createdAt FROM paste_reports ORDER BY createdAt DESC LIMIT $1 OFFSET $2",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "pasteId",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "reason",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "decryptionKey",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "createdAt",
+        "ordinal": 4,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e695cee584aa1ed901fa17217525c9854277ed13f68a4d6c7ce2e861f9ba0f88"
+}

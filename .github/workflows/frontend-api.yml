@@ -1,0 +1,48 @@
+name: "API Tests"
+on:
+  push:
+    paths:
+      - "api/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "api/**"
+  workflow_dispatch:
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup Rust toolchain
+        uses: hecrj/setup-rust-action@v2
+        with:
+          rust-version: stable
+          components: rustfmt, clippy
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./api"
+
+      - name: Ensure code compiles
+        run: |
+          cargo build --all
+          cargo build --all --release
+
+      - name: Run Tests
+        run: cargo test --all
+
+      - name: Run Clippy
+        run: cargo clippy --all -- -D warnings
+
+      - name: Run Rustfmt
+        run: cargo fmt --all --check

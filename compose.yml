@@ -1,0 +1,19 @@
+services:
+  lesbin-frontend:
+    build:
+      context: frontend/
+    env_file: .env
+    restart: unless-stopped
+    environment:
+      API_URL: "http://lesbin-api:8255"
+    ports:
+      - 3000:3000
+  lesbin-api:
+    build:
+      context: api/
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - lesbin-data:/srv/lesbin
+volumes:
+  lesbin-data:

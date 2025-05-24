@@ -1,0 +1,31 @@
+<nav>
+    <h1>Lesbin</h1>
+    <div class="links">
+        <a class="link" href="/#">New Paste</a>
+    </div>
+</nav>
+
+<style>
+    h1 {
+        font-size: larger;
+        margin: 0;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px;
+        flex-wrap: wrap;
+
+        .links {
+            display: flex;
+            gap: 1rem;
+            .link {
+                text-decoration: unset;
+            }
+            .link:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+</style>
