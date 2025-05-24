@@ -6,13 +6,10 @@ import { env } from '$env/dynamic/private';
  * @param queryParams The query parameters to include alongside the request.s
  * @returns A fully-formed URL for API resource.
  */
-export function apiUrl(
-    path: string,
-    queryParams?: Record<string, string>
-) {
-    const url = new URL(path, env.API_URL);
+export function apiUrl(path: string, queryParams?: Record<string, string>) {
+    const url = new URL(path, env.LESBIN_API_URL);
     if (queryParams) {
-        url.search = new URLSearchParams(queryParams).toString(); 
+        url.search = new URLSearchParams(queryParams).toString();
     }
     return url;
 }

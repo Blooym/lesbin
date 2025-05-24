@@ -24,7 +24,7 @@ export const actions: Actions = {
         if (!token || token.trim().length === 0) {
             return fail(400, { error: { message: 'Missing token' } });
         }
-        
+
         const returnUrl = url.searchParams.get(AUTHENTICATION_RETURN_PARAM_NAME) ?? '/';
         const res = await fetch(apiUrl('admin/authenticate'), {
             headers: {

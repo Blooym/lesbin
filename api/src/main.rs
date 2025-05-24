@@ -42,7 +42,7 @@ struct Arguments {
     /// Internet socket address that the server should be ran on.
     #[arg(
         long = "address",
-        env = "API_ADDRESS",
+        env = "LESBIN_API_ADDRESS",
         default_value = "127.0.0.1:8255"
     )]
     address: SocketAddr,
@@ -52,14 +52,18 @@ struct Arguments {
     database_url: String,
 
     /// The access token that must be provided alongside all requests to execute any action on this server.
-    #[arg(long = "access-token", env = "API_ACCESS_TOKEN", required = true)]
+    #[arg(
+        long = "access-token",
+        env = "LESBIN_API_ACCESS_TOKEN",
+        required = true
+    )]
     access_token: String,
 
     /// Authentication tokens for use with administrator endpoints and the
     /// /admin frontend panel.
     #[arg(
         long = "admin-auth-token",
-        env = "API_ADMIN_AUTH_TOKENS",
+        env = "LESBIN_API_ADMIN_AUTH_TOKENS",
         value_delimiter = ',',
         required = true
     )]
@@ -68,7 +72,7 @@ struct Arguments {
     /// The maximum allowed size of a paste. Paste size is calculated by combining the sizes of the title and content.
     #[arg(
         long = "paste-max-size",
-        env = "API_PASTE_MAX_SIZE",
+        env = "LESBIN_API_PASTE_MAX_SIZE",
         default_value = "512kb"
     )]
     paste_max_size: ByteSize,
@@ -76,13 +80,13 @@ struct Arguments {
     /// Whether pastes are required to have an expiry time attached.
     #[arg(
         long = "paste-expiry-required",
-        env = "API_PASTE_EXPIRY_REQUIRED",
+        env = "LESBIN_API_PASTE_EXPIRY_REQUIRED",
         default_value_t = false
     )]
     paste_expiry_required: bool,
 
     /// The maximum expiry time of a paste, calculated by adding this time to the time of the paste creation.
-    #[clap(long = "paste-max-expiry", env = "API_PASTE_MAX_EXPIRY", default_value = "1year", value_parser = duration_range_value_parse!(min: 60min, max: 10years))]
+    #[clap(long = "paste-max-expiry", env = "LESBIN_API_PASTE_MAX_EXPIRY", default_value = "1year", value_parser = duration_range_value_parse!(min: 60min, max: 10years))]
     paste_max_expiry: DurationHuman,
 }
 

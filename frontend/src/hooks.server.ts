@@ -14,18 +14,18 @@ export interface APIPasteConfigurationResponse {
 }
 
 export const init: ServerInit = async () => {
-    if (!env.API_URL) {
-        throw new Error('API_URL missing in environment');
+    if (!env.LESBIN_API_URL) {
+        throw new Error('LESBIN_API_URL missing in environment');
     }
-    if (!env.API_ACCESS_TOKEN) {
-        throw new Error('API_ACCESS_TOKEN missing in environment');
+    if (!env.LESBIN_API_ACCESS_TOKEN) {
+        throw new Error('LESBIN_API_ACCESS_TOKEN missing in environment');
     }
 };
 
 export const handleFetch: HandleFetch = async ({ request, fetch }) => {
     // Attach access token to API requests.
-    if (new URL(request.url).origin == new URL(env.API_URL).origin) {
-        request.headers.set(API_ACCESS_TOKEN_HEADER, env.API_ACCESS_TOKEN);
+    if (new URL(request.url).origin == new URL(env.LESBIN_API_URL).origin) {
+        request.headers.set(API_ACCESS_TOKEN_HEADER, env.LESBIN_API_ACCESS_TOKEN);
     }
     return fetch(request);
 };
