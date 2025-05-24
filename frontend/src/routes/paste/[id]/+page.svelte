@@ -5,7 +5,7 @@
     import Dialog from '$lib/components/Dialog.svelte';
     import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
     import { decryptData, importKey } from '$lib/cryptography.client';
-    import { HighlighterLanguages } from '$lib/highlighter';
+    import { HighlighterLanguages, type HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
     import { Highlight, LineNumbers } from 'svelte-highlight';
     import HighlighterTheme from 'svelte-highlight/styles/stackoverflow-dark';
@@ -24,10 +24,15 @@
             throw new Error('No decryption provided in URL fragment');
         }
         const key = await importKey(decryptionKey);
+        const syntaxType = await decryptData(data.paste.encryptedSyntaxType, key);
         return {
             title: await decryptData(data.paste.encryptedTitle, key),
             content: await decryptData(data.paste.encryptedContent, key),
-            deletionKey: localStorage.getItem(`dk-${data.paste.id}`)
+            deletionKey: localStorage.getItem(`dk-${data.paste.id}`),
+            syntaxType:
+                syntaxType in HighlighterLanguages
+                    ? (syntaxType as HighlighterLanguageKey)
+                    : ('plaintext' as HighlighterLanguageKey)
         };
     }
 
@@ -169,7 +174,7 @@
     <div class="paste-content-container">
         {#if !viewAsRaw}
             <Highlight
-                language={HighlighterLanguages[data.paste.syntaxType]}
+                language={HighlighterLanguages[decryptedPaste.syntaxType]}
                 code={decryptedPaste.content}
                 let:highlighted
             >

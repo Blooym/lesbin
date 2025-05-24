@@ -1,4 +1,3 @@
-import { HighlighterLanguages, type HighlighterLanguageKey } from '$lib/highlighter';
 import { apiUrl } from '$lib/server/api';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -50,14 +49,10 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
                 id,
                 encryptedTitle: json.encryptedTitle,
                 encryptedContent: json.encryptedContent,
+                encryptedSyntaxType: json.encryptedSyntaxType,
                 createdAt: json.createdAt * 1000,
                 expiresAt: json.expiresAt * 1000,
                 highlightedLines: highlight,
-                // will fallback to plaintext if key isn't valid.
-                syntaxType:
-                    json.syntaxType in HighlighterLanguages
-                        ? (json.syntaxType as HighlighterLanguageKey)
-                        : ('plaintext' as HighlighterLanguageKey),
                 viewRaw: url.searchParams.get('raw')?.toLowerCase() === 'true'
             }
         };

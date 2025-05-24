@@ -6,7 +6,7 @@ import type { RequestHandler } from './$types';
 export interface CreatePasteRequest {
     encryptedTitle: string;
     encryptedContent: string;
-    syntaxType: string;
+    encryptedSyntaxType: string;
     expiresAt: number | null;
 }
 

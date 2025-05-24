@@ -76,8 +76,8 @@
             const pasteRequest: CreatePasteRequest = {
                 encryptedTitle: await encryptData(pasteTitle.trim(), key),
                 encryptedContent: await encryptData(pasteContent.trim(), key),
-                expiresAt: pasteExpiry ? Math.floor(new Date(pasteExpiry).getTime() / 1000) : null,
-                syntaxType: pasteSyntaxType
+                encryptedSyntaxType: await encryptData(pasteSyntaxType, key),
+                expiresAt: pasteExpiry ? Math.floor(new Date(pasteExpiry).getTime() / 1000) : null
             };
             const pasteSize =
                 pasteRequest.encryptedTitle.length + pasteRequest.encryptedContent.length;
