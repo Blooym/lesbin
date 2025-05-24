@@ -10,7 +10,7 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = ({ url, locals }) => {
     const returnUrl = url.searchParams.get(AUTHENTICATION_RETURN_PARAM_NAME);
     if (locals.authenticationToken) {
-        return redirect(307, returnUrl ?? '/');
+        return redirect(307, returnUrl ?? '/admin');
     }
     return {
         returnUrl
