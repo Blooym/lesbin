@@ -2,6 +2,7 @@
     import { goto } from '$app/navigation';
     import Button from '$lib/components/button/Button.svelte';
     import { encryptData, exportKey, generateKey } from '$lib/cryptography.client';
+    import type { HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
     import { onMount } from 'svelte';
     import type { CreatePasteRequest, CreatePasteResponse } from './api/pastes/+server';
@@ -9,12 +10,13 @@
     const { data } = $props();
     const refreshDatesInterval = 5000;
 
-    let pasteTitle = $state('');
-    let pasteContent = $state('');
+    let pasteTitle: string = $state('');
+    let pasteContent: string = $state('');
+    let pasteSyntaxType: HighlighterLanguageKey = $state('plaintext');
     let pasteExpiry: string | undefined = $state(undefined);
-    let minPasteExpiry = $state(getMinimumPasteExpiry());
-    let maxPasteExpiry = $state(getMaximumPasteExpiry());
-    let creatingPaste = $state(false);
+    let minPasteExpiry: string = $state(getMinimumPasteExpiry());
+    let maxPasteExpiry: string = $state(getMaximumPasteExpiry());
+    let creatingPaste: boolean = $state(false);
 
     onMount(() => {
         const minInterval = setInterval(
@@ -74,7 +76,8 @@
             const pasteRequest: CreatePasteRequest = {
                 encryptedTitle: await encryptData(pasteTitle.trim(), key),
                 encryptedContent: await encryptData(pasteContent.trim(), key),
-                expiresAt: pasteExpiry ? Math.floor(new Date(pasteExpiry).getTime() / 1000) : null
+                expiresAt: pasteExpiry ? Math.floor(new Date(pasteExpiry).getTime() / 1000) : null,
+                syntaxType: pasteSyntaxType
             };
             const pasteSize =
                 pasteRequest.encryptedTitle.length + pasteRequest.encryptedContent.length;
@@ -149,6 +152,12 @@
         required
         autocomplete="off"
     />
+    <label for="pasteSyntax">Syntax Highlighting</label>
+    <select required bind:value={pasteSyntaxType} id="pasteSyntax">
+        {#each data.syntaxHighlightLanguages as syntaxLanguage}
+            <option value={syntaxLanguage}>{syntaxLanguage}</option>
+        {/each}
+    </select>
     <label for="pasteExpiry"
         >Expiry{#if !data.apiConfig.paste.expiryRequired}&nbsp;(Optional){/if}</label
     >

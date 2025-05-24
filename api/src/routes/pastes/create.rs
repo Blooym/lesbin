@@ -13,6 +13,7 @@ pub struct CreatePasteRequest {
     encrypted_title: String,
     encrypted_content: String,
     expires_at: Option<i64>,
+    syntax_type: String,
 }
 
 #[derive(Serialize)]
@@ -63,11 +64,12 @@ pub async fn paste_create_handler(
     let deletion_key = Uuid::new_v4().to_string();
     let hashed_deletion_key = hash_value_sha256(&deletion_key);
     if let Err(err) = query!(
-        "INSERT INTO pastes (id, encryptedTitle, encryptedContent, deletionKey, expiresAt) VALUES ($1, $2, $3, $4, $5)",
+        "INSERT INTO pastes (id, encryptedTitle, encryptedContent, deletionKey, syntaxType, expiresAt) VALUES ($1, $2, $3, $4, $5, $6)",
         id,
         payload.encrypted_title,
         payload.encrypted_content,
         hashed_deletion_key,
+        payload.syntax_type,
         payload.expires_at,
     ).execute(state.database.pool()).await {
         error!("Failed to insert paste into database: {err:?}");

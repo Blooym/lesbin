@@ -2,6 +2,7 @@ CREATE TABLE pastes (
     id TEXT NOT NULL PRIMARY KEY,
     encryptedTitle TEXT NOT NULL,
     encryptedContent TEXT NOT NULL,
+    syntaxType TEXT NOT NULL DEFAULT 'plaintext',
     deletionKey TEXT NOT NULL,
     expiresAt INTEGER,
     createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now'))
