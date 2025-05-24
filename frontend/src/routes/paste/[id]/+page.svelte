@@ -238,11 +238,12 @@
         color: var(--col-on-formfield-background);
         overflow: auto;
         margin: 4px 0;
+        display: flex;
 
         #pasteContentRaw {
             background-color: inherit;
             color: inherit;
-            min-height: 99%;
+            flex: 1;
             width: 100%;
             padding: 10px;
             border: unset;
