@@ -1,6 +1,6 @@
 {
     "name": "lesbin",
-    "description": "A privacy-first end-to-end encrypted pastebin for sharing your dreams, fanfiction and code.",
+    "description": "A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code.",
     "author": {
         "name": "Blooym",
         "url": "https://blooym.dev"

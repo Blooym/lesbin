@@ -1,3 +1,3 @@
 # lesbin
 
-A privacy-first end-to-end encrypted pastebin for sharing your dreams, fanfiction and code.
+A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code.

@@ -12,7 +12,11 @@
 <svelte:head>
     <title>Lesbin</title>
     <meta name="title" content="Lesbin" />
-    <meta name="description" content="A privacy respecting and end-to-end encrypted pastebin." />
+    <meta
+        name="description"
+        content="A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code."
+    />
+    <meta property="og:site_name" content="Lesbin" />
 </svelte:head>
 
 <NavigationBar />
