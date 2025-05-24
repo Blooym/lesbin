@@ -5,7 +5,7 @@ services:
     env_file: .env
     restart: unless-stopped
     environment:
-      API_URL: "http://lesbin-api:8255"
+      LESBIN_API_URL: "http://lesbin-api:8255"
     ports:
       - 3000:3000
   lesbin-api:
