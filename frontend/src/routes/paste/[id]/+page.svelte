@@ -5,12 +5,13 @@
     import Dialog from '$lib/components/Dialog.svelte';
     import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
     import { decryptData, importKey } from '$lib/cryptography.client';
+    import { HighlighterLanguages } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
-    import { HighlightAuto, LineNumbers } from 'svelte-highlight';
-    import highlighterTheme from 'svelte-highlight/styles/stackoverflow-dark';
+    import { Highlight, LineNumbers } from 'svelte-highlight';
+    import HighlighterTheme from 'svelte-highlight/styles/stackoverflow-dark';
     import type { PageProps } from './$types';
 
-    let { data }: PageProps = $props();
+    const { data }: PageProps = $props();
     let showDeleteModal = $state(false);
     let showReportModal = $state(false);
     let viewAsRaw = $state(data.paste.viewRaw);
@@ -88,7 +89,7 @@
 
     <!-- SAFETY: reviewed & fairly trusted package-->
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    {@html highlighterTheme}
+    {@html HighlighterTheme}
 </svelte:head>
 
 {#await decryptPaste()}
@@ -167,13 +168,17 @@
     </div>
     <div class="paste-content-container">
         {#if !viewAsRaw}
-            <HighlightAuto langtag code={decryptedPaste.content} let:highlighted>
+            <Highlight
+                language={HighlighterLanguages[data.paste.syntaxType]}
+                code={decryptedPaste.content}
+                let:highlighted
+            >
                 <LineNumbers
                     highlightedLines={data.paste.highlightedLines}
                     wrapLines={hightlighterWrapLines}
                     {highlighted}
                 />
-            </HighlightAuto>
+            </Highlight>
         {:else}
             <textarea id="pasteContentRaw" spellcheck="false" autocomplete="off" readonly
                 >{decryptedPaste.content}</textarea
@@ -239,6 +244,7 @@
         overflow: auto;
         margin: 4px 0;
         display: flex;
+        flex-direction: column;
 
         #pasteContentRaw {
             background-color: inherit;
