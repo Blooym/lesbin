@@ -1,5 +1,5 @@
 <nav>
-    <h1>Lesbin</h1>
+    <h1><a href="/#">Lesbin</a></h1>
     <div class="links">
         <a class="link" href="/#">New Paste</a>
     </div>
@@ -9,6 +9,10 @@
     h1 {
         font-size: larger;
         margin: 0;
+
+        a {
+            color: inherit;
+        }
     }
     nav {
         display: flex;
