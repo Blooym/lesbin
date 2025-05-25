@@ -3,8 +3,8 @@ import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ url, locals, setHeaders }) => {
     setHeaders({
-		'cache-control': 'no-store',
-	});
+        'cache-control': 'no-store'
+    });
 
     // Don't redirect loop the signin page.
     if (url.pathname === '/admin/signin' && !locals.authenticationToken) {
