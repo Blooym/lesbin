@@ -154,9 +154,9 @@
     />
     <label for="pasteSyntax">Syntax Highlighting</label>
     <select required bind:value={pasteSyntaxType} id="pasteSyntax">
-        {#each data.syntaxHighlightLanguages as syntaxLanguage}
-            <option selected={syntaxLanguage === 'plaintext'} value={syntaxLanguage}
-                >{syntaxLanguage}</option
+        {#each data.syntaxHighlightLanguages as syntaxLanguage (syntaxLanguage.alias ?? syntaxLanguage.name)}
+            <option selected={syntaxLanguage.name === 'plaintext'} value={syntaxLanguage.name}
+                >{syntaxLanguage.alias ?? syntaxLanguage.name}</option
             >
         {/each}
     </select>
