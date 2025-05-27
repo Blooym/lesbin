@@ -138,7 +138,12 @@
 </svelte:head>
 
 <h1>New Paste</h1>
-<p>Pastes are end-to-end encrypted and can only be viewed by anyone with the link.</p>
+<p>
+    Pastes are end-to-end encrypted and can only be viewed by anyone with the link - <a
+        href="https://github.com/Blooym/lesbin?tab=readme-ov-file#how-data-is-stored--encrypted"
+        >learn more</a
+    >.
+</p>
 
 <form id="pasteForm" onsubmit={createPaste}>
     <label for="pasteTitle">Title</label>
