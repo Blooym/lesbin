@@ -51,6 +51,6 @@ Self-hosting Lesbin is easy if you're familiar with OCI containers. However, pre
 
 - Clone the repository locally.
 - Use the provided [compose file](compose.yml) and make modifications where needed for your setup
-- Configure environment variables using [the frontend's .env.example file](./frontend/.env.example) and [the api's .env.example file](./api/.env.example) as references..
+- Configure environment variables using [the frontend's .env.example file](./frontend/.env.example) and [the api's .env.example file](./api/.env.example) as references.
 
 For simple setups it's usually enough to only expose the frontend through a reverse proxy and use your internal server network to access the backend from the frontend.
