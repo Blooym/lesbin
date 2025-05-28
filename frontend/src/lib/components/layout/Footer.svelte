@@ -8,18 +8,11 @@
         <img src={LesbianHeart} alt="a love heart emoji filled by a lesbian flag" />
         by <a href="https://blooym.dev">Blooym</a>
     </p>
-    <small
-        >Lesbin is in active development - pastes may be removed and functionality may change until
-        stablised</small
-    >
 </footer>
 
 <style>
     p {
         margin: 0;
-    }
-    small {
-        color: orange;
     }
     img {
         display: inline;
