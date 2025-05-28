@@ -21,6 +21,7 @@ COPY --from=builder /builder/build build/
 COPY --from=builder /builder/node_modules node_modules/
 COPY package.json .
 EXPOSE 3000
+USER node
 ENV NODE_ENV=production
 CMD [ "node", "build" ]
 
