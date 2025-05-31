@@ -38,7 +38,7 @@
 
     async function deletePaste(id: string, deletionKey: string) {
         const res = await fetch(`/api/pastes/${data.paste.id}`, {
-            body: JSON.stringify({ id, deletionKey }),
+            body: JSON.stringify({ deletionKey }),
             headers: {
                 'Content-Type': 'application/json'
             },
