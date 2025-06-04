@@ -33,11 +33,11 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
     if (highlightParam) {
         const [a, b] = highlightParam.split(',').map(Number);
         if (!isNaN(a) && !isNaN(b)) {
-            const start = Math.min(a, b);
-            const end = Math.max(a, b);
+            const start = Math.min(a, b) - 1;
+            const end = Math.max(a, b) - 1;
             highlight = Array.from({ length: end - start + 1 }, (_, i) => start + i);
         } else if (!isNaN(a)) {
-            highlight = [a];
+            highlight = [a - 1];
         }
     }
 
