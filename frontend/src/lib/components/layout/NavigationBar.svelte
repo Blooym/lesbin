@@ -1,7 +1,7 @@
 <nav>
-    <h1><a href="/#">Lesbin</a></h1>
+    <h1><a href="/">Lesbin</a></h1>
     <div class="links">
-        <a class="link" href="/#">New Paste</a>
+        <a class="link" href="/">New Paste</a>
     </div>
 </nav>
 
