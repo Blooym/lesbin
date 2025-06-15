@@ -51,7 +51,7 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
                 encryptedContent: json.encryptedContent,
                 encryptedSyntaxType: json.encryptedSyntaxType,
                 createdAt: json.createdAt * 1000,
-                expiresAt: json.expiresAt * 1000,
+                expiresAt: json.expiresAt ? json.expiresAt * 1000 : null,
                 highlightedLines: highlight,
                 viewRaw: url.searchParams.get('raw')?.toLowerCase() === 'true'
             }
