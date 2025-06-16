@@ -22,7 +22,5 @@ export const load = async ({ url, locals, setHeaders }) => {
         );
     }
 
-    return {
-        authenticationToken: locals.authenticationToken
-    };
+    return {};
 };
