@@ -46,7 +46,7 @@
         });
         if (res.ok) {
             toastManager.createToast('Successfully deleted paste', { variant: 'success' });
-            localStorage.removeItem(`k-${id}`);
+            localStorage.removeItem(`dk-${id}`);
             await goto('/');
         } else {
             toastManager.createToast(`Failed to delete paste: ${res.status} ${res.statusText}`, {
