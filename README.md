@@ -9,7 +9,7 @@ A privacy-first end-to-end encrypted paste service for sharing your dreams, fanf
 - **Full end-to-end encryption**, pastes can only be read by the intended recipients and no one else, not even the server.
 - **Privacy focused**, no uncessary data is collected about you or your pastes. No accounts, no signup, no identifiable info.
 - **Simple interface** with support for syntax highlighting (powered by Highlight.js), raw view, and line wrapping.
-- **Paste Expire**, set an expiration time, and your paste will automatically be deleted when you’re done with it.
+- **Paste Expiry**, set an expiration time, and your paste will automatically be deleted when you’re done with it.
 - **Moderation tools**  users can report pastes they think break the rules. Admins can review these reports through an easy-to-use admin panel.
 
 ### How Data is Stored & Encrypted
@@ -40,7 +40,7 @@ The following data is hashed before being stored on the server:
 
 ### Paste Reporting
 
-Lesbin allows users to report pastes if they believe the content should be reviewed by an administrator. When a report is submitted, the paste's decryption key is temporarily sent from the reporter to the server, allowing administrators to view the content and make a judgment.
+Lesbin allows users to report pastes if they believe the content should be reviewed by an administrator. When a report is submitted, the paste's decryption key is sent by the reporter to be stored on the server until the report has been processed, allowing administrators to view the content and make a judgment.
 
 - If the report is **dismissed**, the paste's decryption key is removed from the database entirely.
 - If the report is **accepted**, the paste and all associated data will be deleted entirely.
