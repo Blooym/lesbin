@@ -1,6 +1,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import Button from '$lib/components/button/Button.svelte';
+    import TextButton from '$lib/components/button/TextButton.svelte';
     import { encryptData, exportKey, generateKey } from '$lib/cryptography.client';
     import type { HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
@@ -58,6 +59,59 @@
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
         return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    /**
+     * Fills in the create paste form fields using data from the selected file.
+     *
+     * The selected file must be valid UTF-8 and be below the maximum size allowed by the server.
+     */
+    function fillFieldsFromFile() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.onchange = (e) => {
+            const selectedFile = (e.target as HTMLInputElement).files?.[0];
+            if (!selectedFile) {
+                return;
+            }
+
+            if (selectedFile.size > data.apiConfig.paste.maxSizeBytes) {
+                toastManager.createToast(
+                    `File size exceeds the maximum size allowed by the server (${selectedFile.size}bytes > ${data.apiConfig.paste.maxSizeBytes}bytes)`,
+                    { variant: 'error', duration: 4000 }
+                );
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const buffer = e.target?.result as ArrayBuffer;
+                try {
+                    const decoder = new TextDecoder('utf-8', { fatal: true });
+                    const content = decoder.decode(buffer);
+                    // Set the paste fields based on the file content.
+                    pasteTitle = selectedFile.name.trim();
+                    pasteContent = content.trim();
+                    // Make a best-effort attempt to detect the syntax type from MIME type.
+                    const mimeType = selectedFile.type.split('/')[1]?.replace(/^x-/, '') || '';
+                    pasteSyntaxType = data.syntaxHighlightLanguages.some(
+                        (lang) => lang.name === mimeType || lang.alias === mimeType
+                    )
+                        ? (mimeType as HighlighterLanguageKey)
+                        : 'plaintext';
+                } catch {
+                    toastManager.createToast(
+                        'Failed to load file content - it must be valid UTF-8 text.',
+                        {
+                            variant: 'error',
+                            duration: 4000
+                        }
+                    );
+                }
+            };
+            reader.readAsArrayBuffer(selectedFile);
+        };
+        input.click();
     }
 
     /**
@@ -187,9 +241,15 @@
         autocomplete="off"
         spellcheck="false"
     ></textarea>
+    <div>
+        <TextButton type="button" variant="primary" onclick={fillFieldsFromFile}
+            >Upload file</TextButton
+        >
+    </div>
     <Button
         style="width: 15rem; padding: 10px; margin: 15px auto 0 auto;"
         variant="primary"
+        type="submit"
         disabled={creatingPaste}>Create</Button
     >
 </form>
