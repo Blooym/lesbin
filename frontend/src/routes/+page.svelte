@@ -112,6 +112,7 @@
             reader.readAsArrayBuffer(selectedFile);
         };
         input.click();
+        input.remove();
     }
 
     /**

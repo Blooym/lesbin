@@ -75,11 +75,20 @@
         }
     }
 
-    async function copyToClipboard(content: string, alertOnSuccess: boolean) {
+    async function copyToClipboard(content: string) {
         await navigator.clipboard.writeText(content);
-        if (alertOnSuccess) {
-            toastManager.createToast('Copied to clipboard', { duration: 1500 });
-        }
+        toastManager.createToast('Copied to clipboard', { duration: 1500 });
+    }
+
+    async function saveToFile(title: string, content: string) {
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = title;
+        a.click();
+        URL.revokeObjectURL(url);
+        a.remove();
     }
 </script>
 
@@ -204,7 +213,12 @@
                 [
                 <TextButton
                     variant="neutral"
-                    onclick={() => copyToClipboard(decryptedPaste.content, true)}>Copy</TextButton
+                    onclick={() => copyToClipboard(decryptedPaste.content)}>Copy</TextButton
+                > :
+                <TextButton
+                    variant="neutral"
+                    onclick={() => saveToFile(decryptedPaste.title, decryptedPaste.content)}
+                    >Save</TextButton
                 > :
 
                 {#if decryptedPaste.deletionKey}
