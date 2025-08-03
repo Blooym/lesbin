@@ -1,5 +1,5 @@
 use crate::AppState;
-use axum::{Json, extract::State, http::StatusCode, response::IntoResponse};
+use axum::{Json, extract::State, http::StatusCode};
 use serde::Serialize;
 use sqlx::query_scalar;
 use tracing::error;
@@ -12,7 +12,7 @@ pub struct StatisticsResponse {
 
 pub async fn get_statistics_handler(
     State(state): State<AppState>,
-) -> Result<Json<StatisticsResponse>, impl IntoResponse> {
+) -> Result<Json<StatisticsResponse>, StatusCode> {
     match query_scalar!("SELECT COUNT(*) FROM pastes")
         .fetch_one(state.database.pool())
         .await
@@ -22,7 +22,7 @@ pub async fn get_statistics_handler(
         })),
         Err(err) => {
             error!("Failed to insert paste into database: {err:?}");
-            Err(StatusCode::INTERNAL_SERVER_ERROR.into_response())
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
         }
     }
 }

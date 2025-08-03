@@ -19,7 +19,7 @@
     let reportReason = $state('');
 
     async function decryptPaste() {
-        const decryptionKey = location.hash.slice(1);
+        const decryptionKey = location.hash.slice(1).trim();
         if (!decryptionKey) {
             throw new Error('No decryption provided in URL fragment');
         }
@@ -37,6 +37,7 @@
     }
 
     async function deletePaste(id: string, deletionKey: string) {
+        deletionKey = deletionKey.trim();
         const res = await fetch(`/api/pastes/${data.paste.id}`, {
             body: JSON.stringify({ deletionKey }),
             headers: {
@@ -56,6 +57,21 @@
     }
 
     async function reportPaste(id: string, decryptionKey: string, reason: string) {
+        reason = reason.trim();
+        decryptionKey = decryptionKey.trim();
+
+        if (!decryptionKey) {
+            toastManager.createToast('Decryption key must be provided', { variant: 'error' });
+            return;
+        }
+
+        if (reason.length < 10) {
+            toastManager.createToast(`Report reason must be at least 10 characters long`, {
+                variant: 'error'
+            });
+            return;
+        }
+
         const res = await fetch(`/api/pastes/${id}/report`, {
             body: JSON.stringify({
                 reason,
