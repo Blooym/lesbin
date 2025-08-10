@@ -221,7 +221,7 @@
         {/each}
     </select>
     <label for="pasteExpiry"
-        >Expiry{#if !data.apiConfig.paste.expiryRequired}&nbsp;(Optional){/if}</label
+        >Expiry - local time {#if !data.apiConfig.paste.expiryRequired}&nbsp;(Optional){/if}</label
     >
     <input
         id="pasteExpiry"
