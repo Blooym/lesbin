@@ -271,7 +271,7 @@
 
     /* Pastes */
     .paste-content-container {
-        height: 75dvh;
+        height: 75vh;
         border: 1px dashed var(--col-primary);
         border-radius: var(--rounding-normal);
         background-color: var(--col-formfield-background);
