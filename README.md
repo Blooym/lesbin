@@ -1,3 +1,6 @@
+> [!IMPORTANT]  
+> This repository is now [maintained on Codeberg instead](https://codeberg.org/Blooym/lesbin) - this has been archived for historical purposes and is no longer updated.
+
 # lesbin
 
 A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code with only the people you wish to.
