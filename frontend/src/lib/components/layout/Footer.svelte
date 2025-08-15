@@ -4,7 +4,7 @@
 
 <footer>
     <p>
-        <a href="https://github.com/Blooym/lesbin">Lesbin</a> is made with
+        <a href="https://codeberg.org/Blooym/lesbin">Lesbin</a> is made with
         <img src={LesbianHeart} alt="a love heart emoji filled by a lesbian flag" />
         by <a href="https://blooym.dev">Blooym</a>
     </p>

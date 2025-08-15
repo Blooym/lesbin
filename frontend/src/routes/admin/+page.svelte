@@ -9,7 +9,7 @@
 
 <small
     >Note: the admin panel is a work in progress and will be improved over time - feature requests
-    can be made <a target="_blank" href="https://github.com/blooym/lesbin">on GitHub</a>.</small
+    can be made <a target="_blank" href="https://codeberg.org/Blooym/lesbin">on GitHub</a>.</small
 >
 
 <style>

@@ -1,7 +1,7 @@
 [package]
 name = "lesbin-api"
 description = "A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code."
-repository = "https://github.com/Blooym/lesbin"
+repository = "https://codeberg.org/Blooym/lesbin"
 authors = ["Blooym"]
 license = "MIT"
 version = "0.1.0"
