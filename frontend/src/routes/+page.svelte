@@ -194,7 +194,7 @@
 
 <h1>New Paste</h1>
 <p>
-    Pastes are end-to-end encrypted and can only be viewed by anyone with the link - <a
+    Pastes are end-to-end encrypted and are only accessible to those with the link - <a
         href="https://codeberg.org/Blooym/lesbin#how-data-is-stored-encrypted">learn more</a
     >.
 </p>
