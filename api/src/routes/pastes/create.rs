@@ -44,10 +44,10 @@ pub async fn paste_create_handler(
             .into_response());
     }
     // Expiry timestamps must be within a valid range.
-    if let Some(expires_at) = payload.expires_at {
-        if expires_at > (Utc::now() + state.paste_max_expiry).timestamp() {
-            return Err((StatusCode::BAD_REQUEST, "Invalid expiration timestamp").into_response());
-        }
+    if let Some(expires_at) = payload.expires_at
+        && expires_at > (Utc::now() + state.paste_max_expiry).timestamp()
+    {
+        return Err((StatusCode::BAD_REQUEST, "Invalid expiration timestamp").into_response());
     }
     // Paste title/content cannot be empty.
     if payload.encrypted_title.is_empty() || payload.encrypted_content.is_empty() {

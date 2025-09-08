@@ -119,7 +119,6 @@ async fn main() -> Result<()> {
     };
     spawn_expiry_task(app_state.database.clone());
 
-    let tcp_listener = TcpListener::bind(args.address).await?;
     let router = Router::new()
         .route("/statistics", get(get_statistics_handler))
         .route("/config", get(get_config_handler))
@@ -179,6 +178,7 @@ async fn main() -> Result<()> {
         ))
         .with_state(app_state);
 
+    let tcp_listener = TcpListener::bind(args.address).await?;
     info!(
         "Internal server started - listening on: http://{}",
         args.address,

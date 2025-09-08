@@ -1,4 +1,4 @@
 mod delete;
-pub use delete::*;
 mod get;
+pub use delete::*;
 pub use get::*;

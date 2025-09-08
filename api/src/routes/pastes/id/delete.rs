@@ -1,25 +1,21 @@
 use crate::{AppState, cryptography::hash_value_sha256};
 use axum::{
-    Json,
     extract::{Path, State},
     http::StatusCode,
 };
-use serde::Deserialize;
+use axum_extra::{
+    TypedHeader,
+    headers::{Authorization, authorization::Bearer},
+};
 use sqlx::query;
 use tracing::error;
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DeletePasteRequest {
-    deletion_key: String,
-}
 
 pub async fn paste_delete_handler(
     State(state): State<AppState>,
     Path(id): Path<String>,
-    Json(payload): Json<DeletePasteRequest>,
+    authorization_header: TypedHeader<Authorization<Bearer>>,
 ) -> StatusCode {
-    let hashed_deletion_key = hash_value_sha256(&payload.deletion_key);
+    let hashed_deletion_key = hash_value_sha256(authorization_header.token());
     match query!(
         "DELETE FROM pastes WHERE id = $1 AND deletionKey = $2",
         id,
