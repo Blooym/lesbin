@@ -14,6 +14,12 @@ export interface APIPasteConfigurationResponse {
 }
 
 export const init: ServerInit = async () => {
+    // https://github.com/sveltejs/kit/issues/14347
+    if (env.npm_lifecycle_event === 'build') {
+        console.log('Skipping init during build / prerendering');
+        return;
+    }
+
     if (!env.LESBIN_API_URL) {
         throw new Error('LESBIN_API_URL missing in environment');
     }
