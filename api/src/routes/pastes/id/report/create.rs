@@ -21,6 +21,14 @@ pub async fn create_paste_report_handler(
     State(state): State<AppState>,
     Json(payload): Json<ReportPasteRequest>,
 ) -> impl IntoResponse {
+    if !state.reports_enabled {
+        return (
+            StatusCode::FORBIDDEN,
+            "Reporting is not enabled for this instance.",
+        )
+            .into_response();
+    }
+
     // Validate report reason and decryption key
     let decryption_key = payload.decryption_key.trim();
     if decryption_key.is_empty() {

@@ -88,6 +88,22 @@ struct Arguments {
     /// The maximum expiry time of a paste, calculated by adding this time to the time of the paste creation.
     #[clap(long = "paste-max-expiry", env = "LESBIN_API_PASTE_MAX_EXPIRY", default_value = "1year", value_parser = duration_range_value_parse!(min: 60min, max: 10years))]
     paste_max_expiry: DurationHuman,
+
+    /// Whether reports are enabled and can be sent to the server.
+    #[arg(
+        long = "reports-enabled",
+        env = "LESBIN_API_REPORTS_ENABLED",
+        default_value_t = true
+    )]
+    reports_enabled: core::primitive::bool,
+
+    /// The minimum length of a report reason.
+    #[arg(
+        long = "reports-min-length",
+        env = "LESBIN_API_REPORTS_MIN_LENGTH",
+        default_value_t = 15
+    )]
+    reports_min_length: usize,
 }
 
 #[derive(Clone)]
@@ -99,6 +115,9 @@ struct AppState {
     paste_max_size: ByteSize,
     paste_max_expiry: Duration,
     paste_expiry_required: bool,
+
+    reports_enabled: bool,
+    reports_min_length: usize,
 }
 
 #[tokio::main]
@@ -116,6 +135,8 @@ async fn main() -> Result<()> {
         paste_max_size: args.paste_max_size,
         paste_expiry_required: args.paste_expiry_required,
         paste_max_expiry: Duration::from(&args.paste_max_expiry),
+        reports_enabled: args.reports_enabled,
+        reports_min_length: args.reports_min_length,
     };
     spawn_expiry_task(app_state.database.clone());
 

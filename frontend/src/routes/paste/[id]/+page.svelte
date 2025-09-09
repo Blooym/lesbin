@@ -65,7 +65,7 @@
             return;
         }
 
-        if (reason.length < 10) {
+        if (reason.length < data.apiConfig.report.minLength) {
             toastManager.createToast(`Report reason must be at least 10 characters long`, {
                 variant: 'error'
             });
@@ -150,17 +150,15 @@
             {/snippet}
         </Dialog>
         <Dialog title="Report Paste" bind:showModal={showReportModal} closeText="Cancel">
-            <p>Please specify your reason for reporting this paste</p>
             <textarea
                 style="width: 100%; padding: 8px; height: 10rem; resize: none;"
                 bind:value={reportReason}
-                placeholder="For example: 'this paste contains offensive content'"
+                placeholder={`Please write a minimum of ${data.apiConfig.report.minLength} characters explaining why you are reporting this paste.`}
             ></textarea>
             <small>
-                By reporting this paste you will send the decryption key to the server
+                By reporting this paste you agree to send the decryption key to the server
                 administrators so they can review your report.
             </small>
-
             {#snippet actions()}
                 <Button
                     onclick={() => {
@@ -168,7 +166,7 @@
                         showReportModal = false;
                         reportReason = '';
                     }}
-                    disabled={reportReason.trim().length < 10}
+                    disabled={reportReason.trim().length < data.apiConfig.report.minLength}
                     variant="destructive">Report</Button
                 >
             {/snippet}
@@ -235,13 +233,14 @@
                     variant="neutral"
                     onclick={() => saveToFile(decryptedPaste.title, decryptedPaste.content)}
                     >Save</TextButton
-                > :
-
+                >
                 {#if decryptedPaste.deletionKey}
+                    :
                     <TextButton variant="destructive" onclick={() => (showDeleteModal = true)}
                         >Delete</TextButton
                     >
-                {:else}
+                {:else if data.apiConfig.report.enabled}
+                    :
                     <TextButton variant="destructive" onclick={() => (showReportModal = true)}
                         >Report</TextButton
                     >

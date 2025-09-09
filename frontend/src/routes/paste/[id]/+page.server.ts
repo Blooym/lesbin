@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 
 const HIGHLIGHT_LINES_QUERY_PARAM = 'lines';
 
-export const load: PageServerLoad = async ({ params, url, fetch }) => {
+export const load: PageServerLoad = async ({ params, url, fetch, locals }) => {
     const { id } = params;
 
     // Fetch paste data.
@@ -54,6 +54,9 @@ export const load: PageServerLoad = async ({ params, url, fetch }) => {
                 expiresAt: json.expiresAt ? json.expiresAt * 1000 : null,
                 highlightedLines: highlight,
                 viewRaw: url.searchParams.get('raw')?.toLowerCase() === 'true'
+            },
+            apiConfig: {
+                report: locals.apiConfig.report
             }
         };
     } catch (err) {

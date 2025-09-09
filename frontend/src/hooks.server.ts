@@ -4,13 +4,15 @@ import { apiUrl } from '$lib/server/api';
 import type { HandleFetch, ServerInit } from '@sveltejs/kit';
 
 export interface APIConfigurationResponse {
-    paste: APIPasteConfigurationResponse;
-}
-
-export interface APIPasteConfigurationResponse {
-    maxSizeBytes: number;
-    maxExpiry: number;
-    expiryRequired: boolean;
+    paste: {
+        maxSizeBytes: number;
+        maxExpiry: number;
+        expiryRequired: boolean;
+    };
+    report: {
+        enabled: boolean;
+        minLength: number;
+    };
 }
 
 export const init: ServerInit = async () => {
@@ -61,6 +63,7 @@ export const handle = async ({ event, resolve }) => {
         const res = await event.fetch(apiUrl('config'));
         const json: APIConfigurationResponse = await res.json();
         event.locals.apiConfig = json;
+        console.log('Loaded API configuration', json);
     }
 
     return resolve(event, {

@@ -7,19 +7,22 @@ export const DELETE: RequestHandler = async ({ params, request, fetch }) => {
     const { id } = params;
     const deletionKey = request.headers.get('authorization');
     if (!deletionKey) {
-        return json({
-            success: false,
-            message: 'Missing deletion key'
-        }, {
-            status: 400
-        });
+        return json(
+            {
+                success: false,
+                message: 'Missing deletion key'
+            },
+            {
+                status: 400
+            }
+        );
     }
     await kitFetchWrapper(fetch, apiUrl(`pastes/${id}`), {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            "Authorization": deletionKey
-        },
+            Authorization: deletionKey
+        }
     });
     return json({ success: true });
 };
