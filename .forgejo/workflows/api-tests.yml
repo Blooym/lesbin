@@ -11,7 +11,6 @@ on:
 
 jobs:
   test:
-    if: github.event.pull_request.draft == false || github.event_name == 'push'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,13 +22,13 @@ jobs:
           submodules: recursive
 
       - name: Setup Rust toolchain
-        uses: hecrj/setup-rust-action@v2
+        uses: https://github.com/dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
         with:
-          rust-version: stable
+          toolchain: stable
           components: rustfmt, clippy
 
       - name: Setup Rust cache
-        uses: Swatinem/rust-cache@v2
+        uses: https://github.com/Swatinem/rust-cache@94b28bf00e42c2b783e7dd289d30da129b46838b
         with:
           workspaces: "./api"
 
