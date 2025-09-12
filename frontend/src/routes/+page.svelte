@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+    import { resolve } from '$app/paths';
     import Button from '$lib/components/button/Button.svelte';
     import TextButton from '$lib/components/button/TextButton.svelte';
     import { encryptData, exportKey, generateKey } from '$lib/cryptography.client';
@@ -173,7 +174,7 @@
             toastManager.createToast(`Successfully created paste "${pasteTitle}"`, {
                 variant: 'success'
             });
-            await goto(`/paste/${json.id}#${exportedKey}`);
+            await goto(resolve(`/paste/${json.id}#${exportedKey}`));
         } catch (error) {
             console.error(error);
             toastManager.createToast(`Failed to create paste ${error}`, { variant: 'error' });

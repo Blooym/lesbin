@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+    import { resolve } from '$app/paths';
     import Button from '$lib/components/button/Button.svelte';
     import TextButton from '$lib/components/button/TextButton.svelte';
     import Dialog from '$lib/components/Dialog.svelte';
@@ -48,7 +49,7 @@
         if (res.ok) {
             toastManager.createToast('Successfully deleted paste', { variant: 'success' });
             localStorage.removeItem(`dk-${id}`);
-            await goto('/');
+            await goto(resolve('/'));
         } else {
             toastManager.createToast(`Failed to delete paste: ${res.status} ${res.statusText}`, {
                 variant: 'error'
