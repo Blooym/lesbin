@@ -27,15 +27,9 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
 
-      - name: Setup Rust cache
-        uses: https://github.com/Swatinem/rust-cache@94b28bf00e42c2b783e7dd289d30da129b46838b
-        with:
-          workspaces: "./api"
-
       - name: Ensure code compiles
         run: |
           cargo build --all
-          cargo build --all --release
 
       - name: Run Tests
         run: cargo test --all
