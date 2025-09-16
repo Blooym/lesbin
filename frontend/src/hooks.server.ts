@@ -63,7 +63,6 @@ export const handle = async ({ event, resolve }) => {
         const res = await event.fetch(apiUrl('config'));
         const json: APIConfigurationResponse = await res.json();
         event.locals.apiConfig = json;
-        console.log('Loaded API configuration', json);
     }
 
     return resolve(event, {
