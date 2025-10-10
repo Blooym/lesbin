@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT id, encryptedTitle, encryptedContent, encryptedSyntaxType, expiresAt, createdAt FROM pastes WHERE id = $1 AND (expiresAt IS NULL OR expiresAt > $2)",
+  "query": "SELECT id, encrypted_title, encrypted_content, encrypted_syntax_type, expires_at, created_at FROM pastes WHERE id = $1 AND (expires_at IS NULL OR expires_at > strftime('%s','now'))",
   "describe": {
     "columns": [
       {
@@ -9,33 +9,33 @@
         "type_info": "Text"
       },
       {
-        "name": "encryptedTitle",
+        "name": "encrypted_title",
         "ordinal": 1,
         "type_info": "Text"
       },
       {
-        "name": "encryptedContent",
+        "name": "encrypted_content",
         "ordinal": 2,
         "type_info": "Text"
       },
       {
-        "name": "encryptedSyntaxType",
+        "name": "encrypted_syntax_type",
         "ordinal": 3,
         "type_info": "Text"
       },
       {
-        "name": "expiresAt",
+        "name": "expires_at",
         "ordinal": 4,
         "type_info": "Integer"
       },
       {
-        "name": "createdAt",
+        "name": "created_at",
         "ordinal": 5,
         "type_info": "Integer"
       }
     ],
     "parameters": {
-      "Right": 2
+      "Right": 1
     },
     "nullable": [
       false,
@@ -46,5 +46,5 @@
       false
     ]
   },
-  "hash": "a85498fcf8ff7ed9af5e72ef858ac9b254665167f2cd0a31d0512e5c6d0124bf"
+  "hash": "7301c47701048a2df859a9ca1b69212bf39beda14a3a6dd3295828b97b2881b7"
 }

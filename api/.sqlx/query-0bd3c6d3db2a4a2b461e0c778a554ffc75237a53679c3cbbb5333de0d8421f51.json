@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "DELETE FROM pastes WHERE id = $1",
+  "query": "DELETE FROM pastes WHERE id = ?1",
   "describe": {
     "columns": [],
     "parameters": {
@@ -8,5 +8,5 @@
     },
     "nullable": []
   },
-  "hash": "e3b33823d9beed045650601eeb263ea87a6304585f46977344933b840708676d"
+  "hash": "0bd3c6d3db2a4a2b461e0c778a554ffc75237a53679c3cbbb5333de0d8421f51"
 }

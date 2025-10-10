@@ -8,13 +8,13 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-axum = { version = "0.8.4", features = ["http2"] }
-sqlx = { version = "0.8.6", features = ["runtime-tokio", "sqlite", "chrono"] }
-anyhow = "1.0.99"
-bytesize = "2.0.1"
-clap = { version = "4.5.47", features = ["derive", "env"] }
+axum = { version = "0.8.6", features = ["http2"] }
+sqlx = { version = "0.8.6", features = ["runtime-tokio", "sqlite"] }
+anyhow = "1.0.100"
+bytesize = "2.1.0"
+clap = { version = "4.5.48", features = ["derive", "env"] }
 dotenvy = "0.15.7"
-serde = { version = "1.0.219", features = ["derive"] }
+serde = { version = "1.0.228", features = ["derive"] }
 tokio = { version = "1.47.1", features = [
     "macros",
     "rt-multi-thread",
@@ -35,4 +35,4 @@ hex = "0.4.3"
 chrono = { version = "0.4.42", features = ["serde"] }
 clap-duration = "0.1.11"
 duration-human = "0.1.10"
-axum-extra = { version = "0.10.1", features = ["typed-header"] }
+axum-extra = { version = "0.10.3", features = ["typed-header"] }

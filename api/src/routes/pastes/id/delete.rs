@@ -17,7 +17,7 @@ pub async fn paste_delete_handler(
 ) -> StatusCode {
     let hashed_deletion_key = hash_value_sha256(authorization_header.token());
     match query!(
-        "DELETE FROM pastes WHERE id = $1 AND deletionKey = $2",
+        "DELETE FROM pastes WHERE id = ?1 AND deletion_key_hash = ?2",
         id,
         hashed_deletion_key,
     )

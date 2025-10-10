@@ -44,7 +44,7 @@ pub async fn admin_get_all_reports_handler(
         .await
         .unwrap();
 
-    let rows = query!( "SELECT id, pasteId, reason, decryptionKey, createdAt FROM paste_reports ORDER BY createdAt DESC LIMIT $1 OFFSET $2", query_str.per_page, offset)
+    let rows = query!( "SELECT id, paste_id, reason, decryption_key, created_at FROM paste_reports ORDER BY created_at DESC LIMIT ?1 OFFSET ?2", query_str.per_page, offset)
     .fetch_all(state.database.pool())
     .await
     .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
@@ -56,9 +56,9 @@ pub async fn admin_get_all_reports_handler(
             .into_iter()
             .map(|row| ListReportsItem {
                 id: row.id,
-                paste_id: row.pasteId,
-                decryption_key: row.decryptionKey,
-                created_at: row.createdAt,
+                paste_id: row.paste_id,
+                decryption_key: row.decryption_key,
+                created_at: row.created_at,
                 reason: row.reason,
             })
             .collect(),

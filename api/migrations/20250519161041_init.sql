@@ -1,17 +1,18 @@
 CREATE TABLE pastes (
     id TEXT NOT NULL PRIMARY KEY,
-    encryptedTitle TEXT NOT NULL,
-    encryptedContent TEXT NOT NULL,
-    encryptedSyntaxType TEXT NOT NULL,
-    deletionKey TEXT NOT NULL,
-    expiresAt INTEGER,
-    createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+    encrypted_title TEXT NOT NULL,
+    encrypted_content TEXT NOT NULL,
+    encrypted_syntax_type TEXT NOT NULL,
+    deletion_key_hash TEXT NOT NULL,
+    expires_at INTEGER,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
 );
+CREATE INDEX idx_pastes_expires_at ON pastes(expires_at) WHERE expires_at IS NOT NULL;
 
 CREATE TABLE paste_reports (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    pasteId TEXT NOT NULL REFERENCES pastes(id) ON DELETE CASCADE,
+    paste_id TEXT NOT NULL REFERENCES pastes(id) ON DELETE CASCADE,
     reason TEXT NOT NULL,
-    decryptionKey TEXT NOT NULL,
-    createdAt INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+    decryption_key TEXT NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
 );

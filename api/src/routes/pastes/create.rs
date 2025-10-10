@@ -51,7 +51,7 @@ pub async fn paste_create_handler(
     }
     // Paste title/content cannot be empty.
     if payload.encrypted_title.is_empty() || payload.encrypted_content.is_empty() {
-        return Err((StatusCode::BAD_REQUEST, "TItle or content was empty").into_response());
+        return Err((StatusCode::BAD_REQUEST, "Title or content was empty").into_response());
     }
     // Paste title/content cannot exceed max paste size.
     if payload.encrypted_title.len() + payload.encrypted_content.len()
@@ -64,7 +64,7 @@ pub async fn paste_create_handler(
     let deletion_key = Uuid::new_v4().to_string();
     let hashed_deletion_key = hash_value_sha256(&deletion_key);
     if let Err(err) = query!(
-        "INSERT INTO pastes (id, encryptedTitle, encryptedContent, encryptedSyntaxType, deletionKey, expiresAt) VALUES ($1, $2, $3, $4, $5, $6)",
+        "INSERT INTO pastes (id, encrypted_title, encrypted_content, encrypted_syntax_type, deletion_key_hash, expires_at) VALUES ($1, $2, $3, $4, $5, $6)",
         id,
         payload.encrypted_title,
         payload.encrypted_content,

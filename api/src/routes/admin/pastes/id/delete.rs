@@ -10,7 +10,7 @@ pub async fn admin_delete_paste_handler(
     State(state): State<AppState>,
     Path(id): Path<String>,
 ) -> StatusCode {
-    match query!("DELETE FROM pastes WHERE id = $1", id)
+    match query!("DELETE FROM pastes WHERE id = ?1", id)
         .execute(state.database.pool())
         .await
     {

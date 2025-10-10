@@ -216,7 +216,7 @@ fn spawn_expiry_task(database: Arc<Database>) -> JoinHandle<Infallible> {
         loop {
             debug!("Running paste expiry check");
             let now = Utc::now().timestamp();
-            match query!("DELETE FROM pastes WHERE expiresAt < $1", now)
+            match query!("DELETE FROM pastes WHERE expires_at < ?1", now)
                 .execute(database.pool())
                 .await
             {

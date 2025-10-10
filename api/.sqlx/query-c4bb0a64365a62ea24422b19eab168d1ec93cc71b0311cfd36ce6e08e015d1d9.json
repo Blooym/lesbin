@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO pastes (id, encrypted_title, encrypted_content, encrypted_syntax_type, deletion_key_hash, expires_at) VALUES ($1, $2, $3, $4, $5, $6)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "c4bb0a64365a62ea24422b19eab168d1ec93cc71b0311cfd36ce6e08e015d1d9"
+}

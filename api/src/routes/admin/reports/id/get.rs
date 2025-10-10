@@ -23,7 +23,7 @@ pub async fn admin_get_report_handler(
     State(state): State<AppState>,
 ) -> Result<Json<ListReportsResponse>, StatusCode> {
     match query!(
-        "SELECT id, pasteId, reason, decryptionKey, createdAt FROM paste_reports WHERE id = $1",
+        "SELECT id, paste_id, reason, decryption_key, created_at FROM paste_reports WHERE id = ?1",
         id
     )
     .fetch_optional(state.database.pool())
@@ -32,10 +32,10 @@ pub async fn admin_get_report_handler(
         Ok(result) => match result {
             Some(report) => Ok(Json(ListReportsResponse {
                 id: report.id,
-                paste_id: report.pasteId,
-                decryption_key: report.decryptionKey,
+                paste_id: report.paste_id,
+                decryption_key: report.decryption_key,
                 reason: report.reason,
-                created_at: report.createdAt,
+                created_at: report.created_at,
             })),
             None => Err(StatusCode::NOT_FOUND),
         },

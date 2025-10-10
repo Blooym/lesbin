@@ -47,7 +47,7 @@ pub async fn create_paste_report_handler(
 
     // Insert the report into the database
     let result = query!(
-        "INSERT INTO paste_reports (pasteId, reason, decryptionKey) VALUES ($1, $2, $3)",
+        "INSERT INTO paste_reports (paste_id, reason, decryption_key) VALUES (?1, ?2, ?3)",
         id,
         report_reason,
         payload.decryption_key
