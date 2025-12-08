@@ -15,7 +15,7 @@
     const { data }: PageProps = $props();
     let showDeleteModal = $state(false);
     let showReportModal = $state(false);
-    let viewAsRaw = $state(data.paste.viewRaw);
+    let viewAsRaw = $derived(data.paste.viewRaw);
     let hightlighterWrapLines = $state(true);
     let reportReason = $state('');
 

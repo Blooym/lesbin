@@ -1,11 +1,9 @@
 <script lang="ts">
     import Button from '$lib/components/button/Button.svelte';
     import { toastManager } from '$lib/state/toasts.svelte.js';
-    import { writable } from 'svelte/store';
 
     const { data } = $props();
-
-    let reports = writable(data.reports);
+    let reports = $derived(data.reports);
 
     async function viewPaste(id: string, decryptionKey: string) {
         open(`/paste/${id}#${decryptionKey}`);
@@ -26,7 +24,7 @@
             );
             return;
         }
-        reports.update((currentReports) => currentReports.filter((report) => report.id !== id));
+        reports = reports.filter((report) => report.id !== id);
         toastManager.createToast(`Successfully dismissed report ${id}`, { variant: 'success' });
     }
 
@@ -44,9 +42,7 @@
             );
             return;
         }
-        reports.update((currentReports) =>
-            currentReports.filter((report) => report.pasteId !== id)
-        );
+        reports = reports.filter((report) => report.pasteId !== id);
         toastManager.createToast(`Successfully deleted paste ${id}`, { variant: 'success' });
     }
 </script>
@@ -57,7 +53,7 @@
 
 <h1>Paste Reports</h1>
 
-{#if $reports.length > 0}
+{#if reports.length > 0}
     <div class="table-container">
         <table>
             <thead>
@@ -70,7 +66,7 @@
                 </tr>
             </thead>
             <tbody>
-                {#each $reports as report (report.id)}
+                {#each reports as report (report.id)}
                     <tr>
                         <td>{report.id}</td>
                         <td>{report.pasteId}</td>
