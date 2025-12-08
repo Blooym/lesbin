@@ -31,16 +31,17 @@ pub async fn create_paste_report_handler(
 
     // Validate report reason and decryption key
     let decryption_key = payload.decryption_key.trim();
+    let report_reason = payload.reason.trim();
     if decryption_key.is_empty() {
         return (StatusCode::BAD_REQUEST, "Decryption key must not be empty.").into_response();
     }
-
-    // TODO: Move this into a configuration option and report to frontend.
-    let report_reason = payload.reason.trim();
-    if report_reason.len() < 10 {
+    if report_reason.len() < state.reports_min_length {
         return (
             StatusCode::BAD_REQUEST,
-            "Report reason must be at least 10 characters long.",
+            format!(
+                "Report reason must be at least {} characters long.",
+                state.reports_min_length
+            ),
         )
             .into_response();
     }
