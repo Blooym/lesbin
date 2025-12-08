@@ -17,7 +17,7 @@ export const DELETE: RequestHandler = async ({ params, request, fetch }) => {
             }
         );
     }
-    await kitFetchWrapper(fetch, apiUrl(`pastes/${id}`), {
+    await kitFetchWrapper(fetch, apiUrl(`paste/${id}`), {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

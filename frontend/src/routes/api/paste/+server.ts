@@ -18,7 +18,7 @@ export interface CreatePasteResponse {
 export const POST: RequestHandler = async ({ request, fetch }) => {
     const requestJson: CreatePasteRequest = await request.json();
 
-    const res = await kitFetchWrapper(fetch, apiUrl('pastes'), {
+    const res = await kitFetchWrapper(fetch, apiUrl('paste'), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

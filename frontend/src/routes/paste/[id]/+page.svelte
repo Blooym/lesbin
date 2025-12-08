@@ -14,10 +14,8 @@
 
     const { data }: PageProps = $props();
     let showDeleteModal = $state(false);
-    let showReportModal = $state(false);
     let viewAsRaw = $derived(data.paste.viewRaw);
     let hightlighterWrapLines = $state(true);
-    let reportReason = $state('');
 
     async function decryptPaste() {
         const decryptionKey = location.hash.slice(1).trim();
@@ -39,7 +37,7 @@
 
     async function deletePaste(id: string, deletionKey: string) {
         deletionKey = deletionKey.trim();
-        const res = await fetch(`/api/pastes/${data.paste.id}`, {
+        const res = await fetch(`/api/paste/${data.paste.id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${deletionKey}`
@@ -54,41 +52,6 @@
             toastManager.createToast(`Failed to delete paste: ${res.status} ${res.statusText}`, {
                 variant: 'error'
             });
-        }
-    }
-
-    async function reportPaste(id: string, decryptionKey: string, reason: string) {
-        reason = reason.trim();
-        decryptionKey = decryptionKey.trim();
-
-        if (!decryptionKey) {
-            toastManager.createToast('Decryption key must be provided', { variant: 'error' });
-            return;
-        }
-
-        if (reason.length < data.apiConfig.report.minLength) {
-            toastManager.createToast(`Report reason must be at least 10 characters long`, {
-                variant: 'error'
-            });
-            return;
-        }
-
-        const res = await fetch(`/api/pastes/${id}/report`, {
-            body: JSON.stringify({
-                reason,
-                decryptionKey
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST'
-        });
-        if (!res.ok) {
-            toastManager.createToast(`Failed to report paste: ${res.status} ${res.statusText}`, {
-                variant: 'error'
-            });
-        } else {
-            toastManager.createToast('Successfully created paste report', { variant: 'success' });
         }
     }
 
@@ -147,28 +110,6 @@
                         showDeleteModal = false;
                     }}
                     variant="destructive">Delete</Button
-                >
-            {/snippet}
-        </Dialog>
-        <Dialog title="Report Paste" bind:showModal={showReportModal} closeText="Cancel">
-            <textarea
-                style="width: 100%; padding: 8px; height: 10rem; resize: none;"
-                bind:value={reportReason}
-                placeholder={`Please write a minimum of ${data.apiConfig.report.minLength} characters explaining why you are reporting this paste.`}
-            ></textarea>
-            <small>
-                By reporting this paste you agree to send the decryption key to the server
-                administrators so they can review your report.
-            </small>
-            {#snippet actions()}
-                <Button
-                    onclick={() => {
-                        reportPaste(data.paste.id, window.location.hash.slice(1), reportReason);
-                        showReportModal = false;
-                        reportReason = '';
-                    }}
-                    disabled={reportReason.trim().length < data.apiConfig.report.minLength}
-                    variant="destructive">Report</Button
                 >
             {/snippet}
         </Dialog>
@@ -240,10 +181,12 @@
                     <TextButton variant="destructive" onclick={() => (showDeleteModal = true)}
                         >Delete</TextButton
                     >
-                {:else if data.apiConfig.report.enabled}
+                {:else if data.report.email}
                     :
-                    <TextButton variant="destructive" onclick={() => (showReportModal = true)}
-                        >Report</TextButton
+                    <a
+                        id="reportButton"
+                        href={`mailto:${data.report.email}?subject=${encodeURIComponent(`Lesbin Paste Report: ${data.paste.id}`)}&body=${encodeURIComponent(`Hello, I'd like to report this paste on your lesbin instance: <a href='${location.href}'>${location.href}</a>.\n\nMy reason for reporting is: [WRITE YOUR REPORT REASON HERE]\n\n<small><strong>Important Notice</strong>\nReporting encrypted content requires sharing the decryption key. By submitting this report, you:\n- Grant the instance moderators access to decrypt and review the content\n- Understand that the key will be transmitted through email and may be stored by any involved email service providers\n- Understand that your report will be handled according to the instance's policies, and you may not receive a direct response about it.\n- Abuse of the report system may lead to you being restricted entirely.</small>`)}`}
+                        >Report</a
                     >
                 {/if}
                 ]
@@ -269,7 +212,7 @@
         margin: 0.2rem 0;
     }
 
-    /* Pastes */
+    /* Paste */
     .paste-content-container {
         height: 75vh;
         border: 1px dashed var(--col-primary);
@@ -300,9 +243,13 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
+        #reportButton {
+            color: var(--col-destructive);
+            &:hover {
+                color: color-mix(in srgb, var(--col-destructive) 70%, white);
+            }
+        }
     }
-
-    /* Errors */
     .error-container {
         color: red;
         text-align: center;

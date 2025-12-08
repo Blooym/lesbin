@@ -8,11 +8,3 @@ CREATE TABLE pastes (
     created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
 );
 CREATE INDEX idx_pastes_expires_at ON pastes(expires_at) WHERE expires_at IS NOT NULL;
-
-CREATE TABLE paste_reports (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    paste_id TEXT NOT NULL REFERENCES pastes(id) ON DELETE CASCADE,
-    reason TEXT NOT NULL,
-    decryption_key TEXT NOT NULL,
-    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
-);

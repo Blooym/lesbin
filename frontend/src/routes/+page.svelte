@@ -147,7 +147,7 @@
                 return;
             }
 
-            const response = await fetch('/api/pastes', {
+            const response = await fetch('/api/paste', {
                 body: JSON.stringify(pasteRequest),
                 headers: {
                     'Content-Type': 'application/json'

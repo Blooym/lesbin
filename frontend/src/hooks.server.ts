@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import { API_ACCESS_TOKEN_HEADER, AUTHENTICATION_TOKEN_COOKIE_NAME } from '$lib/constants';
+import { API_ACCESS_TOKEN_HEADER } from '$lib/constants';
 import { apiUrl } from '$lib/server/api';
 import type { HandleFetch, ServerInit } from '@sveltejs/kit';
 
@@ -10,8 +10,7 @@ export interface APIConfigurationResponse {
         expiryRequired: boolean;
     };
     report: {
-        enabled: boolean;
-        minLength: number;
+        email: string | null;
     };
 }
 
@@ -39,31 +38,10 @@ export const handleFetch: HandleFetch = async ({ request, fetch }) => {
 };
 
 export const handle = async ({ event, resolve }) => {
-    // Setup auth if the event is on an admin endpoint.
-    if (event.url.pathname.startsWith('/admin') || event.url.pathname.startsWith('/api/admin')) {
-        const token = event.cookies.get(AUTHENTICATION_TOKEN_COOKIE_NAME);
-        if (token) {
-            try {
-                const res = await event.fetch(apiUrl('admin/authenticate'), {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                if (res.ok) {
-                    event.locals.authenticationToken = token;
-                }
-            } catch (err) {
-                console.error('API failed to verify authentication token', err);
-            }
-        }
-    }
-
     // Get the API configuration for validations.
-    {
-        const res = await event.fetch(apiUrl('config'));
-        const json: APIConfigurationResponse = await res.json();
-        event.locals.apiConfig = json;
-    }
+    const res = await event.fetch(apiUrl('instance/config'));
+    const json: APIConfigurationResponse = await res.json();
+    event.locals.apiConfig = json;
 
     return resolve(event, {
         preload: ({ type }) => {

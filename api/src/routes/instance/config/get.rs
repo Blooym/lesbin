@@ -1,5 +1,6 @@
 use crate::AppState;
 use axum::{Json, extract::State};
+use email_address::EmailAddress;
 use serde::Serialize;
 
 #[derive(Serialize)]
@@ -20,8 +21,7 @@ pub struct PasteConfiguration {
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ReportConfiguration {
-    pub enabled: bool,
-    pub min_length: usize,
+    pub email: Option<EmailAddress>,
 }
 
 pub async fn get_config_handler(State(state): State<AppState>) -> Json<GetConfigurationResponse> {
@@ -32,8 +32,7 @@ pub async fn get_config_handler(State(state): State<AppState>) -> Json<GetConfig
             max_size_bytes: state.paste_max_size.0,
         },
         report: ReportConfiguration {
-            enabled: state.reports_enabled,
-            min_length: state.reports_min_length,
+            email: state.report_email,
         },
     })
 }

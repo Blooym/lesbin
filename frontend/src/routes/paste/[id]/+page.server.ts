@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ params, url, fetch, locals }) => {
     // Fetch paste data.
     let response: Response;
     try {
-        response = await fetch(apiUrl(`pastes/${id}`));
+        response = await fetch(apiUrl(`paste/${id}`));
     } catch (err) {
         console.log('Get paste request failed', err);
         error(500, 'An internal error occured while loading this paste');
@@ -55,8 +55,8 @@ export const load: PageServerLoad = async ({ params, url, fetch, locals }) => {
                 highlightedLines: highlight,
                 viewRaw: url.searchParams.get('raw')?.toLowerCase() === 'true'
             },
-            apiConfig: {
-                report: locals.apiConfig.report
+            report: {
+                email: locals.apiConfig.report.email
             }
         };
     } catch (err) {

@@ -18,11 +18,10 @@ use clap_duration::duration_range_value_parse;
 use database::Database;
 use dotenvy::dotenv;
 use duration_human::{DurationHuman, DurationHumanValidator};
+use email_address::EmailAddress;
 use middleware::{admin_auth_middleware, api_auth_middleware};
 use routes::{
-    admin_delete_paste_handler, admin_delete_report_handler, admin_get_all_reports_handler,
-    admin_get_report_handler, create_paste_report_handler, get_auth_status_handler,
-    get_config_handler, get_statistics_handler, paste_create_handler, paste_delete_handler,
+    admin_delete_paste_handler, get_config_handler, paste_create_handler, paste_delete_handler,
     paste_get_handler,
 };
 use sqlx::query;
@@ -89,21 +88,9 @@ struct Arguments {
     #[clap(long = "paste-max-expiry", env = "LESBIN_API_PASTE_MAX_EXPIRY", default_value = "1year", value_parser = duration_range_value_parse!(min: 60min, max: 10years))]
     paste_max_expiry: DurationHuman,
 
-    /// Whether reports are enabled and can be sent to the server.
-    #[arg(
-        long = "reports-enabled",
-        env = "LESBIN_API_REPORTS_ENABLED",
-        default_value_t = true
-    )]
-    reports_enabled: core::primitive::bool,
-
-    /// The minimum length of a report reason.
-    #[arg(
-        long = "reports-min-length",
-        env = "LESBIN_API_REPORTS_MIN_LENGTH",
-        default_value_t = 15
-    )]
-    reports_min_length: usize,
+    /// The email
+    #[clap(long = "report-email", env = "LESBIN_API_REPORT_EMAIL")]
+    report_email: Option<EmailAddress>,
 }
 
 #[derive(Clone)]
@@ -116,8 +103,7 @@ struct AppState {
     paste_max_expiry: Duration,
     paste_expiry_required: bool,
 
-    reports_enabled: bool,
-    reports_min_length: usize,
+    report_email: Option<EmailAddress>,
 }
 
 #[tokio::main]
@@ -135,29 +121,26 @@ async fn main() -> Result<()> {
         paste_max_size: args.paste_max_size,
         paste_expiry_required: args.paste_expiry_required,
         paste_max_expiry: Duration::from(&args.paste_max_expiry),
-        reports_enabled: args.reports_enabled,
-        reports_min_length: args.reports_min_length,
+        report_email: args.report_email,
     };
     spawn_expiry_task(app_state.database.clone());
 
     let router = Router::new()
-        .route("/statistics", get(get_statistics_handler))
-        .route("/config", get(get_config_handler))
+        .nest(
+            "/instance",
+            Router::new().route("/config", get(get_config_handler)),
+        )
         .nest(
             "/admin",
             Router::new()
-                .route("/reports", get(admin_get_all_reports_handler))
-                .route("/reports/{id}", get(admin_get_report_handler))
-                .route("/reports/{id}", delete(admin_delete_report_handler))
                 .route("/pastes/{id}", delete(admin_delete_paste_handler))
-                .route("/authenticate", get(get_auth_status_handler))
                 .layer(axum::middleware::from_fn_with_state(
                     app_state.clone(),
                     admin_auth_middleware,
                 )),
         )
         .nest(
-            "/pastes",
+            "/paste",
             Router::new()
                 .route(
                     "/",
@@ -169,8 +152,7 @@ async fn main() -> Result<()> {
                     )),
                 )
                 .route("/{id}", delete(paste_delete_handler))
-                .route("/{id}", get(paste_get_handler))
-                .route("/{id}/report", post(create_paste_report_handler)),
+                .route("/{id}", get(paste_get_handler)),
         )
         .layer(axum::middleware::from_fn_with_state(
             app_state.clone(),
@@ -194,6 +176,10 @@ async fn main() -> Result<()> {
                     HeaderValue::from_static(env!("CARGO_PKG_NAME")),
                 );
                 res_headers.insert("X-Robots-Tag", HeaderValue::from_static("none"));
+                res_headers.insert(
+                    header::ACCESS_CONTROL_ALLOW_ORIGIN,
+                    HeaderValue::from_static("*"),
+                );
                 res
             },
         ))
