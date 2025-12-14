@@ -1,4 +1,4 @@
-import { LESBIN_API_ACCESS_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { apiUrl } from '$lib/api.server';
 import { API_ACCESS_TOKEN_HEADER } from '$lib/constants';
 import { error } from '@sveltejs/kit';
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ params, url, fetch, locals }) => {
         response = await fetch(apiUrl(`paste/${id}`), {
             headers: {
                 'Content-Type': 'application/json',
-                [API_ACCESS_TOKEN_HEADER]: LESBIN_API_ACCESS_TOKEN
+                [API_ACCESS_TOKEN_HEADER]: env.LESBIN_API_ACCESS_TOKEN
             }
         });
 

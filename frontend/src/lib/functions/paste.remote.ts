@@ -1,5 +1,5 @@
 import { command } from '$app/server';
-import { LESBIN_API_ACCESS_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { apiUrl } from '$lib/api.server';
 import { API_ACCESS_TOKEN_HEADER } from '$lib/constants';
 import * as v from 'valibot';
@@ -17,7 +17,7 @@ export const createPaste = command(
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    [API_ACCESS_TOKEN_HEADER]: LESBIN_API_ACCESS_TOKEN
+                    [API_ACCESS_TOKEN_HEADER]: env.LESBIN_API_ACCESS_TOKEN
                 },
                 body: JSON.stringify({
                     encryptedTitle,
@@ -68,7 +68,7 @@ export const deletePaste = command(
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${key}`,
-                    [API_ACCESS_TOKEN_HEADER]: LESBIN_API_ACCESS_TOKEN
+                    [API_ACCESS_TOKEN_HEADER]: env.LESBIN_API_ACCESS_TOKEN
                 }
             });
 
