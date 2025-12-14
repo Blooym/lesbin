@@ -3,14 +3,14 @@
     import { resolve } from '$app/paths';
     import Button from '$lib/components/button/Button.svelte';
     import TextButton from '$lib/components/button/TextButton.svelte';
-    import { encryptData, exportKey, generateKey } from '$lib/cryptography.client';
+    import { encryptData, exportKey, generateKey } from '$lib/cryptography.js';
+    import { createPaste as createPasteRemote } from '$lib/functions/paste.remote.js';
     import type { HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
     import { onMount } from 'svelte';
-    import type { CreatePasteRequest, CreatePasteResponse } from './api/pastes/+server';
 
     const { data } = $props();
-    const refreshDatesInterval = 5000;
+    const REFRESH_DATES_INTERVAL = 5000;
 
     let pasteTitle: string = $state('');
     let pasteContent: string = $state('');
@@ -23,11 +23,11 @@
     onMount(() => {
         const minInterval = setInterval(
             () => (minPasteExpiry = getMinimumPasteExpiry()),
-            refreshDatesInterval
+            REFRESH_DATES_INTERVAL
         );
         const maxInterval = setInterval(
             () => (maxPasteExpiry = getMaximumPasteExpiry()),
-            refreshDatesInterval
+            REFRESH_DATES_INTERVAL
         );
         return () => {
             clearInterval(minInterval);
@@ -129,12 +129,13 @@
             const exportedKey = await exportKey(key);
 
             // Format and encrypt the paste and send it to the server.
-            const pasteRequest: CreatePasteRequest = {
+            const pasteRequest = {
                 encryptedTitle: await encryptData(pasteTitle.trim(), key),
                 encryptedContent: await encryptData(pasteContent.trim(), key),
                 encryptedSyntaxType: await encryptData(pasteSyntaxType, key),
                 expiresAt: pasteExpiry ? Math.floor(new Date(pasteExpiry).getTime() / 1000) : null
             };
+
             const pasteSize =
                 pasteRequest.encryptedTitle.length + pasteRequest.encryptedContent.length;
 
@@ -147,34 +148,20 @@
                 return;
             }
 
-            const response = await fetch('/api/paste', {
-                body: JSON.stringify(pasteRequest),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST'
-            });
-            if (!response.ok) {
-                try {
-                    const json = await response.json();
-                    toastManager.createToast(
-                        `Failed to create paste: ${json.message} (${response.statusText})`,
-                        { variant: 'error' }
-                    );
-                } catch {
-                    toastManager.createToast(
-                        `Failed to create paste:  ${response.status} ${response.statusText}`,
-                        { variant: 'error' }
-                    );
-                }
+            const result = await createPasteRemote(pasteRequest);
+
+            if (!result.success) {
+                toastManager.createToast(`Failed to create paste: ${result.message}`, {
+                    variant: 'error'
+                });
                 return;
             }
-            const json: CreatePasteResponse = await response.json();
-            window.localStorage.setItem(`dk-${json.id}`, json.deletionKey);
+
+            window.localStorage.setItem(`dk-${result.id}`, result.deletionKey!);
             toastManager.createToast(`Successfully created paste "${pasteTitle}"`, {
                 variant: 'success'
             });
-            await goto(resolve(`/paste/${json.id}#${exportedKey}`));
+            await goto(resolve(`/paste/${result.id}#${exportedKey}`));
         } catch (error) {
             console.error(error);
             toastManager.createToast(`Failed to create paste ${error}`, { variant: 'error' });
@@ -238,7 +225,7 @@
         bind:value={pasteContent}
         placeholder="println!(&quot;this is my paste&quot;);"
         required
-        minlength={8}
+        minlength={10}
         autocomplete="off"
         spellcheck="false"
     ></textarea>

@@ -1,4 +1,6 @@
-import { apiUrl } from '$lib/server/api';
+import { LESBIN_API_ACCESS_TOKEN } from '$env/static/private';
+import { apiUrl } from '$lib/api.server';
+import { API_ACCESS_TOKEN_HEADER } from '$lib/constants';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -10,21 +12,28 @@ export const load: PageServerLoad = async ({ params, url, fetch, locals }) => {
     // Fetch paste data.
     let response: Response;
     try {
-        response = await fetch(apiUrl(`paste/${id}`));
+        response = await fetch(apiUrl(`paste/${id}`), {
+            headers: {
+                'Content-Type': 'application/json',
+                [API_ACCESS_TOKEN_HEADER]: LESBIN_API_ACCESS_TOKEN
+            }
+        });
+
+        if (!response.ok) {
+            console.error(
+                'Get paste response did not return as successful',
+                response.status,
+                response.statusText
+            );
+            return error(500, 'An internal error occured while loading this paste.');
+        }
+
+        if (response.status === 404) {
+            return error(404, 'This paste does not exist.');
+        }
     } catch (err) {
         console.log('Get paste request failed', err);
         error(500, 'An internal error occured while loading this paste');
-    }
-
-    if (response.status === 404) {
-        return error(404, 'This paste does not exist.');
-    } else if (!response.ok) {
-        console.error(
-            'Get paste response did not return as successful',
-            response.status,
-            response.statusText
-        );
-        return error(500, 'An internal error occured while loading this paste.');
     }
 
     // Support for line highlighting.

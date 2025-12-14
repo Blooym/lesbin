@@ -5,7 +5,8 @@
     import TextButton from '$lib/components/button/TextButton.svelte';
     import Dialog from '$lib/components/Dialog.svelte';
     import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
-    import { decryptData, importKey } from '$lib/cryptography.client';
+    import { decryptData, importKey } from '$lib/cryptography';
+    import { deletePaste as deletePasteRemote } from '$lib/functions/paste.remote';
     import { HighlighterLanguages, type HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
     import { Highlight, LineNumbers } from 'svelte-highlight';
@@ -37,19 +38,13 @@
 
     async function deletePaste(id: string, deletionKey: string) {
         deletionKey = deletionKey.trim();
-        const res = await fetch(`/api/paste/${data.paste.id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${deletionKey}`
-            },
-            method: 'DELETE'
-        });
-        if (res.ok) {
+        const res = await deletePasteRemote({ id, key: deletionKey });
+        if (res.success) {
             toastManager.createToast('Successfully deleted paste', { variant: 'success' });
             localStorage.removeItem(`dk-${id}`);
             await goto(resolve('/'));
         } else {
-            toastManager.createToast(`Failed to delete paste: ${res.status} ${res.statusText}`, {
+            toastManager.createToast(`Failed to delete paste: ${res.message}`, {
                 variant: 'error'
             });
         }

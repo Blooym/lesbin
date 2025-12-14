@@ -1,4 +1,5 @@
 <script lang="ts">
+    import favicon from '$lib/assets/icons/lesbian_heart.png';
     import Footer from '$lib/components/layout/Footer.svelte';
     import NavigationBar from '$lib/components/layout/NavigationBar.svelte';
     import Toast from '$lib/components/Toast.svelte';
@@ -17,6 +18,7 @@
         content="A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code."
     />
     <meta property="og:site_name" content="Lesbin" />
+    <link rel="icon" href={favicon} />
 </svelte:head>
 
 <NavigationBar />
