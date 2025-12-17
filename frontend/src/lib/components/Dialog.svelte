@@ -28,8 +28,8 @@
         {@render children?.()}
 
         <div class="actions">
-            {@render actions?.()}
             <Button variant="neutral" onclick={() => dialog?.close()}>{closeText}</Button>
+            {@render actions?.()}
         </div>
     </div>
 </dialog>
