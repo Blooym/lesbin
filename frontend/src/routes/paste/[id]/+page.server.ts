@@ -18,22 +18,22 @@ export const load: PageServerLoad = async ({ params, url, fetch, locals }) => {
                 [API_ACCESS_TOKEN_HEADER]: env.LESBIN_API_ACCESS_TOKEN
             }
         });
-
-        if (!response.ok) {
-            console.error(
-                'Get paste response did not return as successful',
-                response.status,
-                response.statusText
-            );
-            return error(500, 'An internal error occured while loading this paste.');
-        }
-
-        if (response.status === 404) {
-            return error(404, 'This paste does not exist.');
-        }
     } catch (err) {
-        console.log('Get paste request failed', err);
+        console.error('Get paste request failed', err);
         error(500, 'An internal error occured while loading this paste');
+    }
+
+    if (response.status === 404) {
+        return error(404, 'This paste does not exist, it may have been deleted or have expired.');
+    }
+
+    if (!response.ok) {
+        console.error(
+            'Get paste response did not return as successful',
+            response.status,
+            response.statusText
+        );
+        return error(500, 'An internal error occured while loading this paste.');
     }
 
     // Support for line highlighting.
