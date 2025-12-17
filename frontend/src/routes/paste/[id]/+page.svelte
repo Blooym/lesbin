@@ -132,18 +132,18 @@
         <small>
             Created
             <time datetime={new Date(data.paste.createdAt).toISOString()}>
-                {new Date(data.paste.createdAt).toLocaleString(undefined, {
-                    dateStyle: 'medium',
-                    timeStyle: 'long'
-                })}
+                {new Intl.DateTimeFormat(undefined, {
+                    dateStyle: 'long',
+                    timeStyle: 'short'
+                }).format(new Date(data.paste.createdAt))}
             </time>
             {#if data.paste.expiresAt}
                 - Expires
                 <time datetime={new Date(data.paste.expiresAt).toISOString()}>
-                    {new Date(data.paste.expiresAt).toLocaleString(undefined, {
-                        dateStyle: 'medium',
-                        timeStyle: 'long'
-                    })}
+                    {new Intl.DateTimeFormat(undefined, {
+                        dateStyle: 'long',
+                        timeStyle: 'short'
+                    }).format(new Date(data.paste.expiresAt))}
                 </time>
             {/if}
         </small>
