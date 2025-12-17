@@ -188,12 +188,14 @@
     />
 </svelte:head>
 
-<h1>New Paste</h1>
-<p>
-    Pastes are end-to-end encrypted and are only accessible to those with the link - <a
-        href="https://codeberg.org/Blooym/lesbin#how-data-is-stored-encrypted">learn more</a
-    >.
-</p>
+<div>
+    <h1>New Paste</h1>
+    <p>
+        Pastes are <a href="https://codeberg.org/Blooym/lesbin#how-data-is-stored-encrypted"
+            >end-to-end encrypted</a
+        > and only accessible to you and those you share the link with.
+    </p>
+</div>
 
 <form id="pasteForm" onsubmit={createPaste}>
     <label for="pasteTitle">Title</label>
@@ -257,7 +259,7 @@
     }
     #pasteForm {
         background-color: var(--mantle-colour);
-        padding: 1rem;
+        padding: 0.8rem;
         border-radius: var(--rounding-normal);
         display: flex;
         flex-direction: column;

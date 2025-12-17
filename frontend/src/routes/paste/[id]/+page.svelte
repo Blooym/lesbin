@@ -99,15 +99,17 @@
 </svelte:head>
 
 {#await decryptPaste()}
-    <div style="display: flex; align-items: center; gap: 8px; margin: 0; padding: 0;">
-        <h1>Loading Paste</h1>
-        <LoadingSpinner />
+    <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin: 0; padding: 0;">
+            <h1>Loading Paste</h1>
+            <LoadingSpinner />
+        </div>
+        <p>
+            This may take some time depending on the speed of your device and the size of the paste
+            as content has to be decrypted and syntax highlighted by your browser. Please note that
+            this browser tab may become temporarily unresponsive whilst this process takes place.
+        </p>
     </div>
-    <p>
-        This may take some time depending on the speed of your device and the size of the paste as
-        content has to be decrypted and syntax highlighted by your browser. Please note that this
-        browser tab may become temporarily unresponsive whilst this process takes place.
-    </p>
 {:then decryptedPaste}
     <div>
         <Dialog title="Delete Paste" bind:showModal={showDeleteModal} closeText="Cancel">
