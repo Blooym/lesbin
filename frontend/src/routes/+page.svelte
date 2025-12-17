@@ -237,7 +237,7 @@
         autocomplete="off"
         spellcheck="false"
     ></textarea>
-    <div>
+    <div id="uploadButton">
         <TextButton type="button" variant="primary" onclick={pasteFromFile}>Upload file</TextButton>
     </div>
     <Button
@@ -256,15 +256,28 @@
         margin: 0.2rem 0;
     }
     #pasteForm {
+        background-color: var(--mantle-colour);
+        padding: 1rem;
+        border-radius: var(--rounding-normal);
         display: flex;
         flex-direction: column;
-        margin-top: 6px;
+        margin-top: 1.2rem;
         flex: auto;
+        #uploadButton {
+            margin-top: 0.2rem;
+        }
         label {
             margin: 0.8rem 0;
             font-weight: bold;
         }
+        input {
+            background-color: var(--crust-colour);
+        }
+        select {
+            background-color: var(--crust-colour);
+        }
         textarea {
+            background-color: var(--crust-crust);
             min-height: 15rem;
             flex: auto;
             resize: none;

@@ -60,7 +60,7 @@ button {
 }
 
 textarea {
-    padding: var(--rounding-normal);
+    padding: 0.3rem;
     background-color: var(--mantle-colour);
     color: var(---text-colour);
     border: 1px dashed var(--accent-colour);
@@ -74,7 +74,7 @@ textarea {
 }
 
 select {
-    padding: var(--rounding-normal);
+    padding: 0.3rem;
     background-color: var(--mantle-colour);
     color: var(--text-colour);
     border: 1px dashed var(--accent-colour);
@@ -88,7 +88,7 @@ select {
 }
 
 input {
-    padding: var(--rounding-normal);
+    padding: 0.3rem;
     background-color: var(--mantle-colour);
     color: var(--text-colour);
     border: 1px dashed var(--accent-colour);
