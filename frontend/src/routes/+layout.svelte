@@ -37,8 +37,8 @@
     :global(body) {
         display: flex;
         flex-direction: column;
-        background-color: var(--col-background);
-        color: var(--col-on-background);
+        background-color: var(--base-colour);
+        color: var(--text-colour);
         margin: auto;
         font-family: 'inter', sans-serif;
         max-width: 1200px;

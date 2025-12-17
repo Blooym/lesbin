@@ -8,12 +8,18 @@ services:
       LESBIN_API_URL: "http://lesbin-api:8255"
     ports:
       - 3000:3000
+    networks:
+      - lesbin
   lesbin-api:
     build:
       context: api/
     env_file: .env
     restart: unless-stopped
+    networks:
+      - lesbin
     volumes:
       - lesbin-data:/srv/lesbin
 volumes:
   lesbin-data:
+networks:
+  lesbin:

@@ -24,21 +24,21 @@
     .toast {
         padding: 1rem;
         border-radius: var(--rounding-normal);
-        color: var(--col-on-popout);
-        background-color: var(--col-popout-background);
+        color: var(--text-colour);
+        background-color: var(--surface-colour);
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         min-width: 200px;
     }
     .info {
-        background-color: dodgerblue;
-        color: white;
+        background-color: var(--informational-colour);
+        color: var(--crust-colour);
     }
     .success {
-        background-color: green;
-        color: white;
+        background-color: var(--positive-colour);
+        color: var(--crust-colour);
     }
     .error {
-        background-color: var(--col-error);
-        color: white;
+        background-color: var(--negative-colour);
+        color: var(--crust-colour);
     }
 </style>

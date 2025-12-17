@@ -10,7 +10,6 @@
     import { onMount } from 'svelte';
 
     const { data } = $props();
-    const REFRESH_DATES_INTERVAL = 5000;
 
     let pasteTitle: string = $state('');
     let pasteContent: string = $state('');
@@ -18,9 +17,10 @@
     let pasteExpiry: string | undefined = $state(undefined);
     let minPasteExpiry: string = $state(getMinimumPasteExpiry());
     let maxPasteExpiry: string = $state(getMaximumPasteExpiry());
-    let creatingPaste: boolean = $state(false);
+    let processingCreate: boolean = $state(false);
 
     onMount(() => {
+        const REFRESH_DATES_INTERVAL = 5000;
         const minInterval = setInterval(
             () => (minPasteExpiry = getMinimumPasteExpiry()),
             REFRESH_DATES_INTERVAL
@@ -63,11 +63,23 @@
     }
 
     /**
+     *  Convert a set of bytes to a human-readable output.
+     * @param bytes The raw byte count to format.
+     */
+    function formatBytes(bytes: number): string {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    /**
      * Fills in the create paste form fields using data from the selected file.
      *
      * The selected file must be valid UTF-8 and be below the maximum size allowed by the server.
      */
-    function fillFieldsFromFile() {
+    function pasteFromFile() {
         const input = document.createElement('input');
         input.type = 'file';
         input.onchange = (e) => {
@@ -78,7 +90,7 @@
 
             if (selectedFile.size > data.apiConfig.paste.maxSizeBytes) {
                 toastManager.createToast(
-                    `File size exceeds the maximum size allowed by the server (${selectedFile.size}bytes > ${data.apiConfig.paste.maxSizeBytes}bytes)`,
+                    `File size exceeds maximum of ${formatBytes(data.apiConfig.paste.maxSizeBytes)}`,
                     { variant: 'error', duration: 4000 }
                 );
                 return;
@@ -100,9 +112,10 @@
                     )
                         ? (mimeType as HighlighterLanguageKey)
                         : 'plaintext';
-                } catch {
+                } catch (err) {
+                    console.warn('An invalid file type was uploaded', err);
                     toastManager.createToast(
-                        'Failed to load file content - it must be valid UTF-8 text.',
+                        'This file contains unsupported content. Please select a plain text file.',
                         {
                             variant: 'error',
                             duration: 4000
@@ -122,24 +135,21 @@
     async function createPaste(event: Event) {
         try {
             event.preventDefault();
-            creatingPaste = true;
+            processingCreate = true;
 
-            // Create a new encryption key.
+            // Encrypt paste content.
             const key = await generateKey();
-            const exportedKey = await exportKey(key);
-
-            // Format and encrypt the paste and send it to the server.
             const pasteRequest = {
                 encryptedTitle: await encryptData(pasteTitle.trim(), key),
                 encryptedContent: await encryptData(pasteContent.trim(), key),
                 encryptedSyntaxType: await encryptData(pasteSyntaxType, key),
                 expiresAt: pasteExpiry ? Math.floor(new Date(pasteExpiry).getTime() / 1000) : null
             };
+            const exportedKey = await exportKey(key);
 
+            // Don't try to upload pastes that are above the server's max size.
             const pasteSize =
                 pasteRequest.encryptedTitle.length + pasteRequest.encryptedContent.length;
-
-            // Don't try to upload pastes that are above the max size.
             if (pasteSize > data.apiConfig.paste.maxSizeBytes) {
                 toastManager.createToast(
                     `Paste size exceeds the maximum size allowed by the server (${pasteSize}bytes > ${data.apiConfig.paste.maxSizeBytes}bytes)`,
@@ -149,14 +159,12 @@
             }
 
             const result = await createPasteRemote(pasteRequest);
-
             if (!result.success) {
                 toastManager.createToast(`Failed to create paste: ${result.message}`, {
                     variant: 'error'
                 });
                 return;
             }
-
             window.localStorage.setItem(`dk-${result.id}`, result.deletionKey!);
             toastManager.createToast(`Successfully created paste "${pasteTitle}"`, {
                 variant: 'success'
@@ -166,7 +174,7 @@
             console.error(error);
             toastManager.createToast(`Failed to create paste ${error}`, { variant: 'error' });
         } finally {
-            creatingPaste = false;
+            processingCreate = false;
         }
     }
 </script>
@@ -208,7 +216,7 @@
         {/each}
     </select>
     <label for="pasteExpiry"
-        >Expiry - local time {#if !data.apiConfig.paste.expiryRequired}&nbsp;(Optional){/if}</label
+        >Expiry{#if !data.apiConfig.paste.expiryRequired}&nbsp;(Optional){/if}</label
     >
     <input
         id="pasteExpiry"
@@ -230,15 +238,13 @@
         spellcheck="false"
     ></textarea>
     <div>
-        <TextButton type="button" variant="primary" onclick={fillFieldsFromFile}
-            >Upload file</TextButton
-        >
+        <TextButton type="button" variant="primary" onclick={pasteFromFile}>Upload file</TextButton>
     </div>
     <Button
         style="width: 15rem; padding: 10px; margin: 15px auto 0 auto;"
         variant="primary"
         type="submit"
-        disabled={creatingPaste}>Create</Button
+        disabled={processingCreate}>Create</Button
     >
 </form>
 

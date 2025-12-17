@@ -39,8 +39,8 @@
         width: 90%;
         max-width: 35em;
         border-radius: var(--rounding-normal);
-        background-color: var(--col-popout-background);
-        color: var(--col-on-popout);
+        background-color: var(--surface-colour);
+        color: var(--text-colour);
         border: 1px solid black;
         padding: 0;
 

@@ -23,24 +23,24 @@
         opacity: 0.6;
     }
     .neutral {
-        background-color: var(--col-neutral);
-        color: var(--col-on-neutral);
+        background-color: var(--neutral-colour);
+        color: var(--crust-colour);
     }
     .neutral:hover {
-        background-color: color-mix(in srgb, var(--col-neutral) 70%, white);
+        background-color: color-mix(in srgb, var(--neutral-colour) 70%, white);
     }
     .primary {
-        background-color: var(--col-primary);
-        color: var(--col-on-primary);
+        background-color: var(--accent-colour);
+        color: var(--crust-colour);
     }
     .primary:hover {
-        background-color: color-mix(in srgb, var(--col-primary) 70%, white);
+        background-color: color-mix(in srgb, var(--accent-colour) 70%, white);
     }
     .destructive {
-        background-color: var(--col-destructive);
-        color: var(--col-on-destructive);
+        background-color: var(--negative-colour);
+        color: var(--crust-colour);
     }
     .destructive:hover {
-        background-color: color-mix(in srgb, var(--col-destructive) 70%, white);
+        background-color: color-mix(in srgb, var(--negative-colour) 70%, white);
     }
 </style>

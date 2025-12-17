@@ -5,20 +5,16 @@
 
 /* Light Colours */
 :root {
-    --col-background: #ebebeb;
-    --col-on-background: #323232;
-    --col-popout-background: #e6e6e6;
-    --col-on-popout: #323232;
-    --col-formfield-background: #e6e6e6;
-    --col-on-formfield-background: #323232;
-    --col-primary: #9d4fc2;
-    --col-on-primary: #ffffff;
-    --col-destructive: #e22323;
-    --col-on-destructive: white;
-    --col-error: #e22323;
-    --col-neutral: #696969;
-    --col-on-neutral: white;
-    --col-link: hsl(from var(--col-primary) h s 45%);
+    --base-colour: rgb(239, 241, 245);
+    --mantle-colour: rgb(230, 233, 239);
+    --crust-colour: rgb(220, 224, 232);
+    --surface-colour: rgb(49, 50, 68);
+    --text-colour: rgb(76, 79, 105);
+    --negative-colour: rgb(210, 15, 57);
+    --positive-colour: rgb(64, 160, 43);
+    --neutral-colour: rgb(76, 79, 105) rgb(76, 79, 105);
+    --informational-colour: rgb(4, 165, 229);
+    --accent-colour: rgb(136, 57, 239);
 }
 
 html {
@@ -28,20 +24,16 @@ html {
 /* Dark Colours */
 @media (prefers-color-scheme: dark) {
     :root {
-        --col-background: #080808;
-        --col-on-background: white;
-        --col-popout-background: #181818;
-        --col-formfield-background: #252525;
-        --col-on-formfield-background: white;
-        --col-on-popout: white;
-        --col-primary: #9d4fc2;
-        --col-on-primary: white;
-        --col-destructive: #d41818;
-        --col-error: #d41818;
-        --col-on-destructive: white;
-        --col-neutral: lightgrey;
-        --col-on-neutral: black;
-        --col-link: hsl(from var(--col-primary) h s 75%);
+        --base-colour: rgb(30, 30, 46);
+        --mantle-colour: rgb(24, 24, 37);
+        --crust-colour: rgb(17, 17, 27);
+        --surface-colour: rgb(49, 50, 68);
+        --text-colour: rgb(205, 214, 244);
+        --negative-colour: rgb(243, 139, 168);
+        --positive-colour: rgb(166, 227, 161);
+        --neutral-colour: rgb(205, 214, 244);
+        --informational-colour: rgb(137, 180, 250);
+        --accent-colour: rgb(203, 166, 247);
     }
 
     html {
@@ -50,61 +42,63 @@ html {
 }
 
 a {
-    color: var(--col-link);
+    color: var(--accent-colour);
     text-decoration: unset;
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
-a:hover {
-    color: color-mix(in srgb, var(--col-link) 70%, white);
-    text-decoration: underline;
-}
+button {
+    &:hover {
+        cursor: pointer;
+    }
 
-button:hover {
-    cursor: pointer;
-}
-
-button:disabled {
-    cursor: not-allowed;
+    &:disabled {
+        cursor: not-allowed;
+    }
 }
 
 textarea {
     padding: var(--rounding-normal);
-    background-color: var(--col-formfield-background);
-    color: var(--col-on-formfield-background);
-    border: 1px dashed var(--col-primary);
+    background-color: var(--mantle-colour);
+    color: var(---text-colour);
+    border: 1px dashed var(--accent-colour);
     border-radius: var(--rounding-normal);
-}
 
-textarea:focus {
-    border: 1px solid var(--col-primary);
-    outline: unset;
-    box-shadow: unset;
+    &:focus {
+        border: 1px solid var(--accent-colour);
+        outline: unset;
+        box-shadow: unset;
+    }
 }
 
 select {
     padding: var(--rounding-normal);
-    background-color: var(--col-formfield-background);
-    color: var(--col-on-formfield-background);
-    border: 1px dashed var(--col-primary);
+    background-color: var(--mantle-colour);
+    color: var(--text-colour);
+    border: 1px dashed var(--accent-colour);
     border-radius: var(--rounding-normal);
-}
 
-select:focus {
-    border: 1px solid var(--col-primary);
-    outline: unset;
-    box-shadow: unset;
+    &:focus {
+        border: 1px solid var(--accent-colour);
+        outline: unset;
+        box-shadow: unset;
+    }
 }
 
 input {
     padding: var(--rounding-normal);
-    background-color: var(--col-formfield-background);
-    color: var(--col-on-formfield-background);
-    border: 1px dashed var(--col-primary);
+    background-color: var(--mantle-colour);
+    color: var(--text-colour);
+    border: 1px dashed var(--accent-colour);
     border-radius: var(--rounding-normal);
-}
 
-input:focus {
-    border: 1px solid var(--col-primary);
-    outline: unset;
-    box-shadow: unset;
+    &:focus {
+        focus {
+            border: 1px solid var(--accent-colour);
+            outline: unset;
+            box-shadow: unset;
+        }
+    }
 }

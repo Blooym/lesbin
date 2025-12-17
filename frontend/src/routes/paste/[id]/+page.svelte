@@ -10,18 +10,30 @@
     import { HighlighterLanguages, type HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
     import { Highlight, LineNumbers } from 'svelte-highlight';
-    import HighlighterTheme from 'svelte-highlight/styles/stackoverflow-dark';
+    import HighlightThemeDark from 'svelte-highlight/styles/tokyo-night-dark';
+    import HighlightThemeLight from 'svelte-highlight/styles/xcode';
     import type { PageProps } from './$types';
 
     const { data }: PageProps = $props();
     let showDeleteModal = $state(false);
     let viewAsRaw = $derived(data.paste.viewRaw);
     let hightlighterWrapLines = $state(true);
+    let isDarkTheme = $state(true);
+
+    $effect(() => {
+        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        isDarkTheme = darkModeQuery.matches;
+        const handler = (e: MediaQueryListEvent) => {
+            isDarkTheme = e.matches;
+        };
+        darkModeQuery.addEventListener('change', handler);
+        return () => darkModeQuery.removeEventListener('change', handler);
+    });
 
     async function decryptPaste() {
         const decryptionKey = location.hash.slice(1).trim();
         if (!decryptionKey) {
-            throw new Error('No decryption provided in URL fragment');
+            throw new Error('No decryption key provided in URL fragment');
         }
         const key = await importKey(decryptionKey);
         const syntaxType = await decryptData(data.paste.encryptedSyntaxType, key);
@@ -77,8 +89,13 @@
     <meta name="robots" content="noindex, nofollow" />
 
     <!-- SAFETY: reviewed & fairly trusted package-->
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    {@html HighlighterTheme}
+    {#if isDarkTheme}
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+        {@html HighlightThemeDark}
+    {:else}
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+        {@html HighlightThemeLight}
+    {/if}
 </svelte:head>
 
 {#await decryptPaste()}
@@ -210,10 +227,10 @@
     /* Paste */
     .paste-content-container {
         height: 75vh;
-        border: 1px dashed var(--col-primary);
+        border: 1px dashed var(--accent-colour);
         border-radius: var(--rounding-normal);
-        background-color: var(--col-formfield-background);
-        color: var(--col-on-formfield-background);
+        background-color: var(--mantle-colour);
+        color: var(--text-colour);
         overflow: auto;
         margin: 4px 0;
         display: flex;
@@ -239,16 +256,16 @@
         align-items: center;
         flex-wrap: wrap;
         #reportButton {
-            color: var(--col-destructive);
+            color: var(--negative-colour);
             &:hover {
-                color: color-mix(in srgb, var(--col-destructive) 70%, white);
+                color: color-mix(in srgb, var(--negative-colour) 70%, white);
             }
         }
     }
     .error-container {
-        color: red;
+        color: var(--negative-colour);
         text-align: center;
         padding: 1rem;
-        border: 1px solid red;
+        border: 1px solid var(--negative-colour);
     }
 </style>
