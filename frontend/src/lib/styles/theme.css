@@ -8,11 +8,11 @@
     --base-colour: rgb(239, 241, 245);
     --mantle-colour: rgb(230, 233, 239);
     --crust-colour: rgb(220, 224, 232);
-    --surface-colour: rgb(49, 50, 68);
+    --surface-colour: rgb(204, 208, 218);
     --text-colour: rgb(76, 79, 105);
     --negative-colour: rgb(210, 15, 57);
     --positive-colour: rgb(64, 160, 43);
-    --neutral-colour: rgb(76, 79, 105) rgb(76, 79, 105);
+    --neutral-colour: rgb(76, 79, 105);
     --informational-colour: rgb(4, 165, 229);
     --accent-colour: rgb(136, 57, 239);
 }
