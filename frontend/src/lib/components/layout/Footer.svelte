@@ -21,8 +21,7 @@
         height: 18px;
     }
     footer {
-        margin-top: 2em;
-        margin-bottom: 1.5rem;
+        margin: 1rem 0;
         text-align: center;
     }
 </style>

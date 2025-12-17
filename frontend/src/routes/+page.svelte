@@ -243,7 +243,7 @@
         <TextButton type="button" variant="primary" onclick={pasteFromFile}>Upload file</TextButton>
     </div>
     <Button
-        style="width: 15rem; padding: 10px; margin: 15px auto 0 auto;"
+        style="width: 15rem; padding: 10px; margin: 10px auto 10px auto;"
         variant="primary"
         type="submit"
         disabled={processingCreate}>Create</Button

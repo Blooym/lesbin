@@ -5,7 +5,7 @@
     import Toast from '$lib/components/Toast.svelte';
     import '$lib/styles/reset.css';
     import '$lib/styles/theme.css';
-    import '@fontsource/inter';
+    import '@fontsource/maple-mono';
 
     const { children } = $props();
 </script>
@@ -29,7 +29,10 @@
 <Footer />
 
 <style>
-    /* Design */
+    :global(*) {
+        font-family: 'Maple Mono', monospace, sans-serif;
+        word-spacing: -0.2ch;
+    }
     :global(html),
     :global(body) {
         height: 100%;
@@ -40,11 +43,8 @@
         background-color: var(--base-colour);
         color: var(--text-colour);
         margin: auto;
-        font-family: 'inter', sans-serif;
         max-width: 1200px;
     }
-
-    /* Scoped */
     main {
         display: flex;
         flex-direction: column;

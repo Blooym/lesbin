@@ -155,6 +155,7 @@
             <Highlight
                 language={HighlighterLanguages[decryptedPaste.syntaxType]}
                 code={decryptedPaste.content}
+                langtag
                 let:highlighted
             >
                 <LineNumbers
