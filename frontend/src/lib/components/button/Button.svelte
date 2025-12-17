@@ -13,6 +13,7 @@
         padding: 6px;
         border: none;
         border-radius: var(--rounding-normal);
+        font-weight: bold;
     }
     .btn:hover {
         cursor: pointer;
