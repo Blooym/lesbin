@@ -277,7 +277,7 @@
             background-color: var(--crust-colour);
         }
         textarea {
-            background-color: var(--crust-crust);
+            background-color: var(--crust-colour);
             min-height: 15rem;
             flex: auto;
             resize: none;
