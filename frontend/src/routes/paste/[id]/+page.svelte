@@ -128,27 +128,26 @@
             {/snippet}
         </Dialog>
     </div>
-
-    <div class="paste-info">
+    <div>
         <h1>{decryptedPaste.title}</h1>
-        <small>
+        <p>
             Created
             <time datetime={new Date(data.paste.createdAt).toISOString()}>
                 {new Intl.DateTimeFormat(undefined, {
-                    dateStyle: 'long',
+                    dateStyle: 'short',
                     timeStyle: 'short'
                 }).format(new Date(data.paste.createdAt))}
             </time>
             {#if data.paste.expiresAt}
-                - Expires
+                / Expires
                 <time datetime={new Date(data.paste.expiresAt).toISOString()}>
                     {new Intl.DateTimeFormat(undefined, {
-                        dateStyle: 'long',
+                        dateStyle: 'short',
                         timeStyle: 'short'
                     }).format(new Date(data.paste.expiresAt))}
                 </time>
             {/if}
-        </small>
+        </p>
     </div>
     <div class="paste-content-container">
         {#if !viewAsRaw}
