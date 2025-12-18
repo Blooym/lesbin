@@ -14,7 +14,12 @@ const ENCRYPTION_VERSION = EncryptionVersion.V1;
  * @param data The data to encode.
  * @returns The Base64Url representation of the data.
  */
-function _encodeBase64(data: Uint8Array<ArrayBuffer>): string {
+function _encodeBase64(data: Uint8Array): string {
+    // @ts-expect-error - toBase64 is a new web standard API
+    if (typeof uint8Array.toBase64 === 'function') {
+        // @ts-expect-error - toBase64 is a new web standard API
+        return uint8Array.toBase64({ alphabet: 'base64url' });
+    }
     return btoa(String.fromCharCode(...data))
         .replace(/\+/g, '-')
         .replace(/\//g, '_');
@@ -25,7 +30,12 @@ function _encodeBase64(data: Uint8Array<ArrayBuffer>): string {
  * @param data The string to decode.
  * @returns A Uint8Array instance of the decoded Base64Url string.
  */
-function _decodeBase64(data: string): Uint8Array {
+function _decodeBase64(data: string): BufferSource {
+    // @ts-expect-error - fromBase64 is a new web standard API
+    if (typeof Uint8Array.fromBase64 === 'function') {
+        // @ts-expect-error fromBase64 is a new web standard API
+        return Uint8Array.fromBase64(data, { alphabet: 'base64url' });
+    }
     const base64 = data.replace(/-/g, '+').replace(/_/g, '/');
     return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
 }
