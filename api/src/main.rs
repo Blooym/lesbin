@@ -19,11 +19,8 @@ use database::Database;
 use dotenvy::dotenv;
 use duration_human::{DurationHuman, DurationHumanValidator};
 use email_address::EmailAddress;
-use middleware::{admin_auth_middleware, api_auth_middleware};
-use routes::{
-    admin_delete_paste_handler, get_config_handler, paste_create_handler, paste_delete_handler,
-    paste_get_handler,
-};
+use middleware::api_auth_middleware;
+use routes::{get_config_handler, paste_create_handler, paste_delete_handler, paste_get_handler};
 use sqlx::query;
 use std::{convert::Infallible, net::SocketAddr, sync::Arc, time::Duration};
 use tokio::{net::TcpListener, signal, task::JoinHandle};
@@ -58,16 +55,6 @@ struct Arguments {
     )]
     access_token: String,
 
-    /// Authentication tokens for use with administrator endpoints and the
-    /// /admin frontend panel.
-    #[arg(
-        long = "admin-auth-token",
-        env = "LESBIN_API_ADMIN_AUTH_TOKENS",
-        value_delimiter = ',',
-        required = true
-    )]
-    admin_tokens: Vec<String>,
-
     /// The maximum allowed size of a paste. Paste size is calculated by combining the sizes of the title and content.
     #[arg(
         long = "paste-max-size",
@@ -97,7 +84,6 @@ struct Arguments {
 struct AppState {
     database: Arc<Database>,
     access_token: String,
-    admin_tokens: Vec<String>,
 
     paste_max_size: ByteSize,
     paste_max_expiry: Duration,
@@ -115,7 +101,6 @@ async fn main() -> Result<()> {
     let args = Arguments::parse();
 
     let app_state = AppState {
-        admin_tokens: args.admin_tokens,
         access_token: args.access_token,
         database: Arc::new(Database::new(&args.database_url).await?),
         paste_max_size: args.paste_max_size,
@@ -129,15 +114,6 @@ async fn main() -> Result<()> {
         .nest(
             "/instance",
             Router::new().route("/config", get(get_config_handler)),
-        )
-        .nest(
-            "/admin",
-            Router::new()
-                .route("/pastes/{id}", delete(admin_delete_paste_handler))
-                .layer(axum::middleware::from_fn_with_state(
-                    app_state.clone(),
-                    admin_auth_middleware,
-                )),
         )
         .nest(
             "/paste",
