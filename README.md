@@ -2,14 +2,11 @@
 
 A privacy-first, end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code.
 
-<table>
-    <tr>
-        <td><img alt="screenshot of lesbin's home page with a form to create a new paste" src="./assets/screenshots/homepage.webp" /></td>
-        <td><img alt="screenshot of lesbin's view paste page showing some example rust code" src="./assets/screenshots/paste.webp" /></td>
-    </tr>
-</table>
+| Home Page                                                                                                 | View paste page                                                                                           |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| ![screenshot of lesbin's home page with a form to create a new paste](./assets/screenshots/homepage.webp) | ![screenshot of lesbin's view paste page showing some example rust code](./assets/screenshots/paste.webp) |
 
-## About 
+## About
 
 ### Features
 
