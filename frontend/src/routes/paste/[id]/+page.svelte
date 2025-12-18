@@ -195,7 +195,7 @@
             <label for="viewRawCheckbox">Raw</label>
             {#if !viewAsRaw}
                 <input id="lineWrapCheckbox" bind:checked={hightlighterWrapLines} type="checkbox" />
-                <label for="lineWrapCheckbox">Line Wrap</label>
+                <label for="lineWrapCheckbox">Wrap</label>
             {/if}
         </div>
         <div>
