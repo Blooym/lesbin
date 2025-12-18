@@ -107,10 +107,11 @@
                     pasteContent = content.trim();
                     // Make a best-effort attempt to detect the syntax type from MIME type.
                     const mimeType = selectedFile.type.split('/')[1]?.replace(/^x-/, '') || '';
-                    pasteSyntaxType = data.syntaxHighlightLanguages.some(
+                    const matchedLanguage = data.syntaxHighlightLanguages.find(
                         (lang) => lang.name === mimeType || lang.alias === mimeType
-                    )
-                        ? (mimeType as HighlighterLanguageKey)
+                    );
+                    pasteSyntaxType = matchedLanguage
+                        ? (matchedLanguage.name as HighlighterLanguageKey)
                         : 'plaintext';
                 } catch (err) {
                     console.warn('An invalid file type was uploaded', err);

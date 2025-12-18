@@ -11,13 +11,21 @@ const highlightAliases: HighlighterLanguage[] = [
     {
         name: 'xml',
         alias: 'html'
+    },
+    {
+        name: 'ini',
+        alias: 'toml'
     }
 ];
 
 const highlightLanguages: HighlighterLanguage[] = [
     ...hljs
         .listLanguages()
-        .filter((lang): lang is HighlighterLanguageKey => lang in HighlighterLanguages)
+        .filter(
+            (lang): lang is HighlighterLanguageKey =>
+                lang in HighlighterLanguages &&
+                !highlightAliases.some((alias) => alias.name === lang)
+        )
         .map((lang) => ({
             name: lang,
             alias: null
