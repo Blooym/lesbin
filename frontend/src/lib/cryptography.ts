@@ -10,21 +10,24 @@ const ENCRYPTION_VERSION = EncryptionVersion.V1;
 // -- Encoding --
 
 /**
- * Encode data into a Base64 string.
+ * Encode data into a Base64Url string.
  * @param data The data to encode.
- * @returns The Base64 representation of the data.
+ * @returns The Base64Url representation of the data.
  */
-function _encodeBase64(data: Uint8Array): string {
-    return btoa(Array.from(data, (byte) => String.fromCharCode(byte)).join(''));
+function _encodeBase64(data: Uint8Array<ArrayBuffer>): string {
+    return btoa(String.fromCharCode(...data))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
 }
 
 /**
- * Decode A Base64 string into a Uint8Array.
+ * Decode a Base64Url string into a Uint8Array.
  * @param data The string to decode.
- * @returns A Uint8Array instance of the decoded Base64 string.
+ * @returns A Uint8Array instance of the decoded Base64Url string.
  */
 function _decodeBase64(data: string): Uint8Array {
-    return Uint8Array.from(atob(data), (c) => c.charCodeAt(0));
+    const base64 = data.replace(/-/g, '+').replace(/_/g, '/');
+    return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
 }
 
 // -- Key Management --
