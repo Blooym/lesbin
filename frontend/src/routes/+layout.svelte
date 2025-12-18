@@ -31,7 +31,7 @@
 <style>
     :global(*) {
         font-family: 'Maple Mono', monospace, sans-serif;
-        word-spacing: -0.2ch;
+        word-spacing: -0.3ch;
     }
     :global(html),
     :global(body) {
