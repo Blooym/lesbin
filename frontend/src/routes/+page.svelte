@@ -192,7 +192,7 @@
 <div>
     <h1>New Paste</h1>
     <p>
-        Pastes are <a href="https://codeberg.org/Blooym/lesbin#how-data-is-stored-encrypted"
+        Pastes are <a href="https://codeberg.org/Blooym/lesbin#what-data-is-stored-encrypted"
             >end-to-end encrypted</a
         > and only accessible to you and those you share the link with.
     </p>

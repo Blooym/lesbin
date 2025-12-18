@@ -1,48 +1,48 @@
 # lesbin
 
-A privacy-first end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code with only the people you wish to.
+A privacy-first, end-to-end encrypted paste service for sharing your dreams, fanfiction, logs and code.
+
+<div style="display: flex; flex-direction: row;" >
+    <img style="width: 50%;" alt="screenshot of lesbin's home page with a form to create a new paste" src="./assets/screenshots/homepage.webp" />
+    <img style="width: 50%;" alt="screenshot of lesbin's view paste page showing some example rust code" src="./assets/screenshots/paste.webp" />
+</div>
 
 ## About 
 
 ### Features
 
-- **Full end-to-end encryption**, pastes can only be read by the intended recipients and no one else, not even the server.
-- **Privacy focused**, no uncessary data is collected about you or your pastes. No accounts, no signup, no identifiable info.
-- **Simple interface** with support for syntax highlighting (powered by Highlight.js), raw view, and line wrapping.
-- **Paste Expiry**, set an expiration time, and your paste will automatically be deleted when you’re done with it.
+- **Fully end-to-end encrypted**, pastes can only be viewed by the recipients you send the link to. No one else, not even the server, can view their content.
+- **Private**, minimal data is collected about you or your pastes. No accounts and no identifiable info required.
+- **Simple interface**, supports syntax highlighting, content raw view and line wrapping.
+- **Paste expiry**, set an expiration on your paste and it will automatically be deleted when the time comes.
 
-### How Data is Stored & Encrypted
+### What data is stored & encrypted
 
-Everything that doesn't need to be known by the server is encrypted, because if the server doesn't need it, it shouldn't have access to it.
+Everything that doesn't need to be known by the server is encrypted in your browser before leaving your device. Below is a list of data that is collected by the service and how it is stored.
 
-#### End-to-End Encryption
+**The following data is encrypted**, only those with the decryption key can access it:
 
-The following data is encrypted, ensuring that only those with the decryption key can access it:
-
-- Paste titles.
-- Paste contents
+- Paste title.
+- Paste content.
 - Paste syntax type.
 
-#### Unencrypted Data
-
-The following data is stored unencrypted for operational purposes:
+**The following data is unencrypted** for operational purposes:
 
 - Paste identifier.
-- Paste expiry time.
 - Paste creation time.
+- Paste expiry time (if set).
 
-#### Hashed Data
-
-The following data is hashed before being stored on the server:
+**The following data is hashed** by the server before being stored:
 
 - Paste deletion keys.
 
-## Setup
+## Hosting an instance
 
-Self-hosting Lesbin is easy if you're familiar with OCI containers. However, pre-compiled builds are not currently available, so you'll need to do the following:
+Hosting Lesbin is simple if you're already familiar with OCI containers. Currently no pre-compiled images or binaries are available, so all building will need to be done manually. To do so:
 
-- Clone the repository locally.
-- Use the provided [compose file](compose.yml) and make modifications where needed for your setup
-- Configure environment variables using [the frontend's .env.example file](./frontend/.env.example) and [the api's .env.example file](./api/.env.example) as references.
+- Clone this repository locally.
+- Read and make any modifications to [compose file](compose.yml) where needed for your setup
+- Set environment variables using [the frontend's .env.example file](./frontend/.env.example) and [the api's .env.example file](./api/.env.example) as references.
+- Start the compose stack. Please note that you'll need to setup your own reverse proxy.
 
-For simple setups it's usually enough to only expose the frontend through a reverse proxy and use your internal server network to access the backend from the frontend.
+For simple setups it's enough to only expose the frontend through a reverse proxy and use docker's internal network to access the backend from the frontends container.
