@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { goto } from '$app/navigation';
+    import { goto, invalidateAll } from '$app/navigation';
     import { resolve } from '$app/paths';
     import Button from '$lib/components/button/Button.svelte';
     import TextButton from '$lib/components/button/TextButton.svelte';
@@ -9,6 +9,7 @@
     import { deletePaste as deletePasteRemote } from '$lib/functions/paste.remote';
     import { HighlighterLanguages, type HighlighterLanguageKey } from '$lib/highlighter';
     import { toastManager } from '$lib/state/toasts.svelte';
+    import { onMount } from 'svelte';
     import { Highlight, LineNumbers } from 'svelte-highlight';
     import HighlightThemeDark from 'svelte-highlight/styles/tokyo-night-dark';
     import HighlightThemeLight from 'svelte-highlight/styles/xcode';
@@ -20,14 +21,33 @@
     let hightlighterWrapLines = $state(true);
     let isDarkTheme = $state(true);
 
-    $effect(() => {
+    onMount(() => {
+        // Auto set and update syntax highlighting theme.
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
         isDarkTheme = darkModeQuery.matches;
         const handler = (e: MediaQueryListEvent) => {
             isDarkTheme = e.matches;
         };
         darkModeQuery.addEventListener('change', handler);
-        return () => darkModeQuery.removeEventListener('change', handler);
+
+        // Auto-refresh after paste expires.
+        let autoRefresh: ReturnType<typeof setTimeout> | undefined;
+        if (data.paste.expiresAt) {
+            const delay = data.paste.expiresAt + 5000 - Date.now();
+            if (delay > 0) {
+                autoRefresh = setTimeout(async () => {
+                    await invalidateAll();
+                }, delay);
+            }
+        }
+
+        // Cleanup on navigate.
+        return () => {
+            if (autoRefresh) {
+                clearTimeout(autoRefresh);
+            }
+            darkModeQuery.removeEventListener('change', handler);
+        };
     });
 
     async function decryptPaste() {
