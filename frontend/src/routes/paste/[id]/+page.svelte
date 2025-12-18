@@ -100,7 +100,7 @@
 
 {#await decryptPaste()}
     <div>
-        <div style="display: flex; align-items: center; gap: 8px; margin: 0; padding: 0;">
+        <div class="loading-paste">
             <h1>Loading Paste</h1>
             <LoadingSpinner />
         </div>
@@ -225,8 +225,13 @@
     p {
         margin: 0.2rem 0;
     }
-
-    /* Paste */
+    .loading-paste {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+    }
     .paste-content-container {
         height: 75vh;
         border: 1px dashed var(--accent-colour);
