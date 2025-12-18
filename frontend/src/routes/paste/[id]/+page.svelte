@@ -172,7 +172,7 @@
     <div class="paste-actions">
         <div>
             <input id="viewRawCheckbox" bind:checked={viewAsRaw} type="checkbox" />
-            <label for="viewRawCheckbox">View Raw</label>
+            <label for="viewRawCheckbox">Raw</label>
             {#if !viewAsRaw}
                 <input id="lineWrapCheckbox" bind:checked={hightlighterWrapLines} type="checkbox" />
                 <label for="lineWrapCheckbox">Line Wrap</label>
